@@ -1,0 +1,172 @@
+import React, { useState, useEffect } from 'react';
+import { RotateCcw, Save, Trophy } from 'lucide-react';
+
+const ScoreBoard = ({ match, onMatchComplete, onCancel, teamAName = 'Team 1', teamBName = 'Team 2' }) => {
+    const [currentMatch, setCurrentMatch] = useState(match);
+    const [winner, setWinner] = useState(null);
+
+    useEffect(() => {
+        checkWinner(currentMatch.score1, currentMatch.score2);
+    }, [currentMatch.score1, currentMatch.score2]);
+
+    const checkWinner = (s1, s2) => {
+        // Standard win: 21 points and 2 point lead
+        if ((s1 >= 21 || s2 >= 21) && Math.abs(s1 - s2) >= 2) {
+            setWinner(s1 > s2 ? 1 : 2);
+        }
+        // Max points cap at 30 (golden point)
+        else if (s1 === 30 || s2 === 30) {
+            setWinner(s1 > s2 ? 1 : 2);
+        } else {
+            setWinner(null);
+        }
+    };
+
+    const addPoint = (team) => {
+        if (winner) return;
+
+        const newHistory = [...(currentMatch.history || []), { score1: currentMatch.score1, score2: currentMatch.score2 }];
+
+        setCurrentMatch(prev => ({
+            ...prev,
+            score1: team === 1 ? prev.score1 + 1 : prev.score1,
+            score2: team === 2 ? prev.score2 + 1 : prev.score2,
+            history: newHistory
+        }));
+    };
+
+    const undo = () => {
+        if (!currentMatch.history || currentMatch.history.length === 0) return;
+
+        const lastState = currentMatch.history[currentMatch.history.length - 1];
+        const newHistory = currentMatch.history.slice(0, -1);
+
+        setCurrentMatch(prev => ({
+            ...prev,
+            score1: lastState.score1,
+            score2: lastState.score2,
+            history: newHistory
+        }));
+        setWinner(null);
+    };
+
+    const handleFinish = () => {
+        onMatchComplete(currentMatch);
+    };
+
+    const getPlayerNames = (team) => {
+        if (team === 1) {
+            return currentMatch.type === 'singles' ? currentMatch.player1 : `${currentMatch.player1} & ${currentMatch.player3}`;
+        }
+        return currentMatch.type === 'singles' ? currentMatch.player2 : `${currentMatch.player2} & ${currentMatch.player4}`;
+    };
+
+    return (
+        <div className="container" style={{ padding: 0, maxWidth: '100%' }}>
+            {/* Header / Score Display */}
+            <div style={{
+                backgroundColor: 'var(--color-surface)',
+                padding: '2rem 1rem',
+                textAlign: 'center',
+                borderBottom: '1px solid #334155',
+                position: 'sticky',
+                top: 0,
+                zIndex: 10
+            }}>
+                <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', maxWidth: '600px', margin: '0 auto' }}>
+                    <div style={{ flex: 1 }}>
+                        <div style={{ fontSize: '0.875rem', color: 'var(--color-text-muted)', marginBottom: '0.5rem' }}>
+                            {getPlayerNames(1)}
+                        </div>
+                        <div style={{ fontSize: '4rem', fontWeight: 800, lineHeight: 1, color: winner === 1 ? 'var(--color-primary)' : 'inherit' }}>
+                            {currentMatch.score1}
+                        </div>
+                    </div>
+
+                    <div style={{ padding: '0 1rem', fontSize: '1.5rem', fontWeight: 600, color: 'var(--color-text-muted)' }}>-</div>
+
+                    <div style={{ flex: 1 }}>
+                        <div style={{ fontSize: '0.875rem', color: 'var(--color-text-muted)', marginBottom: '0.5rem' }}>
+                            {getPlayerNames(2)}
+                        </div>
+                        <div style={{ fontSize: '4rem', fontWeight: 800, lineHeight: 1, color: winner === 2 ? 'var(--color-primary)' : 'inherit' }}>
+                            {currentMatch.score2}
+                        </div>
+                    </div>
+                </div>
+
+                {winner && (
+                    <div style={{ marginTop: '1rem', color: 'var(--color-accent)', fontWeight: 600, display: 'flex', alignItems: 'center', justifyContent: 'center', gap: '0.5rem' }}>
+                        <Trophy size={20} />
+                        {getPlayerNames(winner)} Wins!
+                    </div>
+                )}
+            </div>
+
+            {/* Controls */}
+            <div style={{ flex: 1, display: 'flex', flexDirection: 'column', padding: '1rem', maxWidth: '600px', margin: '0 auto', width: '100%', gap: '1rem' }}>
+
+                {!winner ? (
+                    <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '1rem', flex: 1, minHeight: '300px' }}>
+                        <button
+                            className="btn"
+                            style={{
+                                backgroundColor: 'rgba(16, 185, 129, 0.1)',
+                                border: '2px solid var(--color-primary)',
+                                color: 'var(--color-primary)',
+                                fontSize: '1.5rem',
+                                flexDirection: 'column'
+                            }}
+                            onClick={() => addPoint(1)}
+                        >
+                            +1
+                            <span style={{ fontSize: '0.875rem', marginTop: '0.5rem', opacity: 0.8 }}>{teamAName}</span>
+                        </button>
+                        <button
+                            className="btn"
+                            style={{
+                                backgroundColor: 'rgba(16, 185, 129, 0.1)',
+                                border: '2px solid var(--color-primary)',
+                                color: 'var(--color-primary)',
+                                fontSize: '1.5rem',
+                                flexDirection: 'column'
+                            }}
+                            onClick={() => addPoint(2)}
+                        >
+                            +1
+                            <span style={{ fontSize: '0.875rem', marginTop: '0.5rem', opacity: 0.8 }}>{teamBName}</span>
+                        </button>
+                    </div>
+                ) : (
+                    <div style={{ padding: '2rem', textAlign: 'center', backgroundColor: 'rgba(245, 158, 11, 0.1)', borderRadius: 'var(--radius-lg)', border: '1px solid var(--color-accent)' }}>
+                        <h3 style={{ color: 'var(--color-accent)', marginBottom: '1rem' }}>Match Completed</h3>
+                        <p style={{ color: 'var(--color-text-muted)' }}>Final Score: {currentMatch.score1} - {currentMatch.score2}</p>
+                    </div>
+                )}
+
+                <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '1rem', marginTop: 'auto' }}>
+                    <button
+                        className="btn btn-secondary"
+                        onClick={undo}
+                        disabled={!currentMatch.history?.length || winner}
+                        style={{ opacity: (!currentMatch.history?.length || winner) ? 0.5 : 1 }}
+                    >
+                        <RotateCcw size={18} style={{ marginRight: '0.5rem' }} /> Undo
+                    </button>
+
+                    {winner ? (
+                        <button className="btn btn-primary" onClick={handleFinish}>
+                            <Save size={18} style={{ marginRight: '0.5rem' }} /> Save Match
+                        </button>
+                    ) : (
+                        <button className="btn btn-danger" onClick={onCancel}>
+                            End Game
+                        </button>
+                    )}
+                </div>
+            </div>
+        </div>
+    );
+};
+
+export default ScoreBoard;
