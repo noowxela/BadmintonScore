@@ -6,7 +6,7 @@ import App from './App.jsx'
 
 createRoot(document.getElementById('root')).render(
   <StrictMode>
-    <BrowserRouter basename="/badminton_board">
+    <BrowserRouter basename="/BadmintonScore">
       <App />
     </BrowserRouter>
   </StrictMode>,
