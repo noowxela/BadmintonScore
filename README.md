@@ -1,16 +1,70 @@
-# React + Vite
+# BadmintonScore
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+A React-based badminton scoring application with game history tracking and team management.
 
-Currently, two official plugins are available:
+## 🚀 Live Demo
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Babel](https://babeljs.io/) (or [oxc](https://oxc.rs) when used in [rolldown-vite](https://vite.dev/guide/rolldown)) for Fast Refresh
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/) for Fast Refresh
+Visit the live application: [https://noowxela.github.io/BadmintonScore/](https://noowxela.github.io/BadmintonScore/)
 
-## React Compiler
+## 📦 Deployment
 
-The React Compiler is not enabled on this template because of its impact on dev & build performances. To add it, see [this documentation](https://react.dev/learn/react-compiler/installation).
+This project is automatically deployed to GitHub Pages using GitHub Actions.
 
-## Expanding the ESLint configuration
+### Automatic Deployment
 
-If you are developing a production application, we recommend using TypeScript with type-aware lint rules enabled. Check out the [TS template](https://github.com/vitejs/vite/tree/main/packages/create-vite/template-react-ts) for information on how to integrate TypeScript and [`typescript-eslint`](https://typescript-eslint.io) in your project.
+Every push to the `main` branch triggers an automatic deployment:
+1. GitHub Actions builds the application
+2. The build artifacts are deployed to GitHub Pages
+3. Changes are live within a few minutes
+
+### Manual Deployment
+
+To deploy manually:
+
+```bash
+# Build the project
+npm run build
+
+# Preview the production build locally
+npm run preview
+```
+
+### Initial GitHub Pages Setup
+
+If this is your first deployment, enable GitHub Pages:
+1. Go to repository **Settings** → **Pages**
+2. Under **Build and deployment**, select **Source**: **GitHub Actions**
+3. The workflow will handle deployments automatically
+
+## 🛠️ Development
+
+### Prerequisites
+
+- Node.js 20 or higher
+- npm
+
+### Installation
+
+```bash
+# Install dependencies
+npm install
+
+# Start development server
+npm run dev
+
+# Build for production
+npm run build
+
+# Preview production build
+npm run preview
+
+# Lint code
+npm run lint
+```
+
+## 🏗️ Built With
+
+- [React](https://react.dev/) - UI framework
+- [Vite](https://vite.dev/) - Build tool
+- [React Router](https://reactrouter.com/) - Client-side routing
+- [Lucide React](https://lucide.dev/) - Icon library
