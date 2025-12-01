@@ -312,9 +312,77 @@ const MatchupConfig = ({ teams: initialTeams, onStartMatch, onSaveDraft, onBack 
                 </button>
             </div>
 
+            {/* Match Summary Section */}
+            <div style={{
+                marginBottom: '2rem',
+                padding: '1.5rem',
+                background: 'linear-gradient(135deg, rgba(139, 92, 246, 0.1), rgba(59, 130, 246, 0.1))',
+                borderRadius: 'var(--radius-lg)',
+                border: '1px solid rgba(139, 92, 246, 0.2)'
+            }}>
+                <h3 style={{
+                    fontSize: '1.125rem',
+                    fontWeight: 600,
+                    marginBottom: '1rem',
+                    display: 'flex',
+                    alignItems: 'center',
+                    gap: '0.5rem'
+                }}>
+                    <Users size={20} />
+                    Match Summary
+                </h3>
+
+                <div style={{
+                    fontSize: '2rem',
+                    fontWeight: 700,
+                    marginBottom: '1rem',
+                    color: 'var(--color-primary)'
+                }}>
+                    {matches.length} {matches.length === 1 ? 'Match' : 'Matches'}
+                </div>
+
+                {/* Category Breakdown */}
+                <div style={{
+                    display: 'grid',
+                    gridTemplateColumns: 'repeat(auto-fit, minmax(80px, 1fr))',
+                    gap: '0.75rem'
+                }}>
+                    {['MS', 'WS', 'MD', 'WD', 'XD'].map(category => {
+                        const count = matches.filter(m => m.category === category).length;
+                        if (count === 0) return null;
+                        const percentage = ((count / matches.length) * 100).toFixed(0);
+
+                        return (
+                            <div key={category} style={{
+                                backgroundColor: 'rgba(255, 255, 255, 0.05)',
+                                padding: '0.75rem',
+                                borderRadius: 'var(--radius-md)',
+                                textAlign: 'center',
+                                border: '1px solid rgba(255, 255, 255, 0.1)'
+                            }}>
+                                <div style={{
+                                    fontSize: '0.75rem',
+                                    color: 'var(--color-text-muted)',
+                                    marginBottom: '0.25rem'
+                                }}>
+                                    {category}
+                                </div>
+                                <div style={{
+                                    fontSize: '1.5rem',
+                                    fontWeight: 700,
+                                    color: 'var(--color-accent)'
+                                }}>
+                                    {count}
+                                </div>
+                            </div>
+                        );
+                    })}
+                </div>
+            </div>
+
             <div style={{ display: 'grid', gap: '1rem' }}>
                 <button className="btn btn-primary" onClick={handleStart}>
-                    Start Team Match
+                    Start Recording Match Score
                 </button>
                 <button className="btn btn-secondary" onClick={handleSaveDraft}>
                     <Save size={18} style={{ marginRight: '0.5rem' }} /> Save Draft

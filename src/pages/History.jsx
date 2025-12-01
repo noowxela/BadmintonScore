@@ -3,19 +3,19 @@ import { Calendar, User, Users, Trophy, ChevronDown, ChevronUp } from 'lucide-re
 import { getMatchHistory, getTeamMatchHistory } from '../utils/storage';
 
 const History = () => {
-    const singleMatches = getMatchHistory();
-    const teamMatches = getTeamMatchHistory();
+    const singleMatches = getMatchHistory().sort((a, b) => new Date(b.date) - new Date(a.date));
+    const teamMatches = getTeamMatchHistory().sort((a, b) => new Date(b.date) - new Date(a.date));
 
-    // Combine and sort by date (newest first)
-    const history = [...singleMatches, ...teamMatches].sort((a, b) => new Date(b.date) - new Date(a.date));
-
+    const [activeTab, setActiveTab] = useState('quick'); // 'quick' or 'team'
     const [expandedMatchId, setExpandedMatchId] = useState(null);
 
     const toggleExpand = (id) => {
         setExpandedMatchId(expandedMatchId === id ? null : id);
     };
 
-    if (history.length === 0) {
+    const currentHistory = activeTab === 'quick' ? singleMatches : teamMatches;
+
+    if (singleMatches.length === 0 && teamMatches.length === 0) {
         return (
             <div className="card" style={{ textAlign: 'center', padding: '3rem 1rem' }}>
                 <div style={{ color: 'var(--color-text-muted)', marginBottom: '1rem' }}>
@@ -29,7 +29,40 @@ const History = () => {
 
     return (
         <div style={{ display: 'flex', flexDirection: 'column', gap: '1rem' }}>
-            {history.map((match) => {
+            {/* Tab Navigation */}
+            <div style={{ display: 'flex', gap: '0.5rem', borderBottom: '2px solid rgba(255,255,255,0.1)', paddingBottom: '0.5rem' }}>
+                <button
+                    className={`btn ${activeTab === 'quick' ? 'btn-primary' : 'btn-secondary'}`}
+                    onClick={() => setActiveTab('quick')}
+                    style={{ flex: 1, padding: '0.75rem' }}
+                >
+                    <User size={16} style={{ marginRight: '0.5rem', verticalAlign: 'middle' }} />
+                    Quick Matches ({singleMatches.length})
+                </button>
+                <button
+                    className={`btn ${activeTab === 'team' ? 'btn-primary' : 'btn-secondary'}`}
+                    onClick={() => setActiveTab('team')}
+                    style={{ flex: 1, padding: '0.75rem' }}
+                >
+                    <Trophy size={16} style={{ marginRight: '0.5rem', verticalAlign: 'middle' }} />
+                    Team Matches ({teamMatches.length})
+                </button>
+            </div>
+
+            {/* Empty State for Current Tab */}
+            {currentHistory.length === 0 && (
+                <div className="card" style={{ textAlign: 'center', padding: '2rem 1rem' }}>
+                    <div style={{ color: 'var(--color-text-muted)', marginBottom: '0.5rem' }}>
+                        {activeTab === 'quick' ? <User size={32} style={{ opacity: 0.5 }} /> : <Trophy size={32} style={{ opacity: 0.5 }} />}
+                    </div>
+                    <p style={{ color: 'var(--color-text-muted)' }}>
+                        No {activeTab === 'quick' ? 'quick' : 'team'} matches yet
+                    </p>
+                </div>
+            )}
+
+            {/* Match History */}
+            {currentHistory.map((match) => {
                 const isTeamMatch = match.teamA || match.teams; // Handle both structures if any legacy data exists
 
                 if (isTeamMatch) {

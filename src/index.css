@@ -48,7 +48,7 @@ input, select {
 
 /* Utilities */
 .container {
-  max-width: 600px;
+  max-width: 900px;
   margin: 0 auto;
   padding: 1rem;
   min-height: 100vh;
@@ -180,4 +180,23 @@ input, select {
 .nav-card h3 {
   font-size: 1rem;
   font-weight: 600;
+}
+
+.btn-score {
+  height: 100%;
+  width: 100%;
+  font-size: 3rem;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  background-color: rgba(16, 185, 129, 0.1);
+  border: 2px solid var(--color-primary);
+  color: var(--color-primary);
+  transition: all 0.1s;
+}
+
+.btn-score:active {
+  transform: scale(0.98);
+  background-color: rgba(16, 185, 129, 0.2);
 }

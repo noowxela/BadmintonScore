@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
-import { RotateCcw, Save, Trophy } from 'lucide-react';
+import { RotateCcw, Save, Trophy, Home } from 'lucide-react';
 
-const ScoreBoard = ({ match, onMatchComplete, onCancel, teamAName = 'Team 1', teamBName = 'Team 2' }) => {
+const ScoreBoard = ({ match, onMatchComplete, onCancel, onNavigateHome, hasMoreMatches, teamAName = 'Team 1', teamBName = 'Team 2' }) => {
     const [currentMatch, setCurrentMatch] = useState(match);
     const [winner, setWinner] = useState(null);
 
@@ -56,13 +56,33 @@ const ScoreBoard = ({ match, onMatchComplete, onCancel, teamAName = 'Team 1', te
 
     const getPlayerNames = (team) => {
         if (team === 1) {
-            return currentMatch.type === 'singles' ? currentMatch.player1 : `${currentMatch.player1} & ${currentMatch.player3}`;
+            if (currentMatch.type === 'singles') {
+                return currentMatch.player1;
+            }
+            return (
+                <>
+                    <div>{currentMatch.player1}</div>
+                    <div>{currentMatch.player3}</div>
+                </>
+            );
         }
-        return currentMatch.type === 'singles' ? currentMatch.player2 : `${currentMatch.player2} & ${currentMatch.player4}`;
+        if (currentMatch.type === 'singles') {
+            return currentMatch.player2;
+        }
+        return (
+            <>
+                <div>{currentMatch.player2}</div>
+                <div>{currentMatch.player4}</div>
+            </>
+        );
+    };
+
+    const getTeamName = (team) => {
+        return team === 1 ? teamAName : teamBName;
     };
 
     return (
-        <div className="container" style={{ padding: 0, maxWidth: '100%' }}>
+        <div className="container" style={{ padding: 0, maxWidth: '100%', height: '100dvh', overflow: 'hidden', display: 'flex', flexDirection: 'column' }}>
             {/* Header / Score Display */}
             <div style={{
                 backgroundColor: 'var(--color-surface)',
@@ -73,12 +93,20 @@ const ScoreBoard = ({ match, onMatchComplete, onCancel, teamAName = 'Team 1', te
                 top: 0,
                 zIndex: 10
             }}>
+                {winner && (
+                    <div style={{ marginTop: '1rem', color: 'var(--color-accent)', fontWeight: 600, display: 'flex', alignItems: 'center', justifyContent: 'center', gap: '0.5rem' }}>
+                        Match Completed
+                    </div>
+                )}
                 <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', maxWidth: '600px', margin: '0 auto' }}>
                     <div style={{ flex: 1 }}>
+                        <div style={{ fontSize: '0.75rem', color: 'var(--color-primary)', fontWeight: 600, marginBottom: '0.25rem' }}>
+                            {getTeamName(1)}
+                        </div>
                         <div style={{ fontSize: '0.875rem', color: 'var(--color-text-muted)', marginBottom: '0.5rem' }}>
                             {getPlayerNames(1)}
                         </div>
-                        <div style={{ fontSize: '4rem', fontWeight: 800, lineHeight: 1, color: winner === 1 ? 'var(--color-primary)' : 'inherit' }}>
+                        <div style={{ fontSize: '4rem', fontWeight: 800, lineHeight: 1, color: winner === 1 ? 'var(--color-primary)' : 'inherit', display: 'flex', alignItems: 'center', justifyContent: 'center', gap: '0.5rem' }}>
                             {currentMatch.score1}
                         </div>
                     </div>
@@ -86,51 +114,35 @@ const ScoreBoard = ({ match, onMatchComplete, onCancel, teamAName = 'Team 1', te
                     <div style={{ padding: '0 1rem', fontSize: '1.5rem', fontWeight: 600, color: 'var(--color-text-muted)' }}>-</div>
 
                     <div style={{ flex: 1 }}>
+                        <div style={{ fontSize: '0.75rem', color: 'var(--color-primary)', fontWeight: 600, marginBottom: '0.25rem' }}>
+                            {getTeamName(2)}
+                        </div>
                         <div style={{ fontSize: '0.875rem', color: 'var(--color-text-muted)', marginBottom: '0.5rem' }}>
                             {getPlayerNames(2)}
                         </div>
-                        <div style={{ fontSize: '4rem', fontWeight: 800, lineHeight: 1, color: winner === 2 ? 'var(--color-primary)' : 'inherit' }}>
+                        <div style={{ fontSize: '4rem', fontWeight: 800, lineHeight: 1, color: winner === 2 ? 'var(--color-primary)' : 'inherit', display: 'flex', alignItems: 'center', justifyContent: 'center', gap: '0.5rem' }}>
                             {currentMatch.score2}
                         </div>
                     </div>
                 </div>
 
-                {winner && (
-                    <div style={{ marginTop: '1rem', color: 'var(--color-accent)', fontWeight: 600, display: 'flex', alignItems: 'center', justifyContent: 'center', gap: '0.5rem' }}>
-                        <Trophy size={20} />
-                        {getPlayerNames(winner)} Wins!
-                    </div>
-                )}
+
             </div>
 
             {/* Controls */}
             <div style={{ flex: 1, display: 'flex', flexDirection: 'column', padding: '1rem', maxWidth: '600px', margin: '0 auto', width: '100%', gap: '1rem' }}>
 
                 {!winner ? (
-                    <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '1rem', flex: 1, minHeight: '300px' }}>
+                    <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '1rem', flex: 1 }}>
                         <button
-                            className="btn"
-                            style={{
-                                backgroundColor: 'rgba(16, 185, 129, 0.1)',
-                                border: '2px solid var(--color-primary)',
-                                color: 'var(--color-primary)',
-                                fontSize: '1.5rem',
-                                flexDirection: 'column'
-                            }}
+                            className="btn btn-score"
                             onClick={() => addPoint(1)}
                         >
                             +1
                             <span style={{ fontSize: '0.875rem', marginTop: '0.5rem', opacity: 0.8 }}>{teamAName}</span>
                         </button>
                         <button
-                            className="btn"
-                            style={{
-                                backgroundColor: 'rgba(16, 185, 129, 0.1)',
-                                border: '2px solid var(--color-primary)',
-                                color: 'var(--color-primary)',
-                                fontSize: '1.5rem',
-                                flexDirection: 'column'
-                            }}
+                            className="btn btn-score"
                             onClick={() => addPoint(2)}
                         >
                             +1
@@ -138,10 +150,7 @@ const ScoreBoard = ({ match, onMatchComplete, onCancel, teamAName = 'Team 1', te
                         </button>
                     </div>
                 ) : (
-                    <div style={{ padding: '2rem', textAlign: 'center', backgroundColor: 'rgba(245, 158, 11, 0.1)', borderRadius: 'var(--radius-lg)', border: '1px solid var(--color-accent)' }}>
-                        <h3 style={{ color: 'var(--color-accent)', marginBottom: '1rem' }}>Match Completed</h3>
-                        <p style={{ color: 'var(--color-text-muted)' }}>Final Score: {currentMatch.score1} - {currentMatch.score2}</p>
-                    </div>
+                    null
                 )}
 
                 <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '1rem', marginTop: 'auto' }}>
@@ -155,9 +164,12 @@ const ScoreBoard = ({ match, onMatchComplete, onCancel, teamAName = 'Team 1', te
                     </button>
 
                     {winner ? (
-                        <button className="btn btn-primary" onClick={handleFinish}>
-                            <Save size={18} style={{ marginRight: '0.5rem' }} /> Save Match
-                        </button>
+                        <div style={{ display: 'flex', gap: '1rem', flexDirection: 'column' }}>
+                            <button className="btn btn-primary" onClick={handleFinish}>
+                                <Save size={18} style={{ marginRight: '0.5rem' }} />
+                                {hasMoreMatches ? 'Save & Back Team Match page' : 'Save Match'}
+                            </button>
+                        </div>
                     ) : (
                         <button className="btn btn-danger" onClick={onCancel}>
                             End Game
