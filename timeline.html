@@ -1,0 +1,405 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <title>Scroll Timeline (Fixed)</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+
+  <link rel="stylesheet" href="https://public.codepenassets.com/css/normalize-5.0.0.min.css" />
+  <link href="https://fonts.googleapis.com/css?family=Exo+2:400,700&display=swap" rel="stylesheet">
+
+  <style>
+    html { box-sizing: border-box; }
+    *, *::before, *::after { box-sizing: inherit; }
+
+    body {
+      font-family: "Exo 2", sans-serif;
+      line-height: 1.5;
+    }
+
+    .wrapper {
+      margin: 0 auto;
+      padding: 0 16.66% 50px;
+      width: 100%;
+    }
+
+    article {
+      position: relative;
+      max-width: 980px;
+      margin: 0 auto;
+    }
+
+    .timeline__nav {
+      position: fixed;
+      z-index: 99;
+      top: 190px;
+      transition: top 0.3s ease-out;
+    }
+
+    .timeline__nav ul {
+      list-style: none;
+      margin: 15px 0;
+      padding: 0;
+    }
+
+    .timeline__nav li {
+      margin: 15px 0;
+      color: #bfc1c3;
+      border-bottom: 1px dotted rgba(0, 0, 0, 0.3);
+      cursor: pointer;
+      transition: all 0.3s ease-out;
+    }
+
+    .timeline__nav li.active {
+      font-weight: bold;
+      color: #f94125;
+      border-bottom-color: transparent;
+      transform: scale(1.2);
+    }
+
+    .timeline__nav li:hover {
+      color: #000;
+    }
+
+    .milestone {
+      margin-top: 80px;
+    }
+    /* ---------- Mobile Improvements ---------- */
+@media (max-width: 768px) {
+
+body {
+  padding-bottom: 70px; /* space for bottom nav */
+}
+
+.timeline__nav {
+  top: auto !important;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  background: #fff;
+  border-top: 1px solid #e5e7eb;
+  box-shadow: 0 -2px 10px rgba(0,0,0,.08);
+}
+
+.timeline__nav ul {
+  display: flex;
+  overflow-x: auto;
+  white-space: nowrap;
+  margin: 0;
+  padding: 10px 12px;
+  -webkit-overflow-scrolling: touch;
+}
+
+.timeline__nav li {
+  flex: 0 0 auto;
+  margin: 0 12px;
+  padding: 8px 6px;
+  border: none;
+  font-size: 14px;
+}
+
+.timeline__nav li.active {
+  transform: scale(1.05);
+}
+
+.milestone {
+  scroll-margin-top: 90px;
+}
+}
+
+  </style>
+</head>
+
+<body>
+
+<article class="timeline">
+  <nav class="timeline__nav">
+    <ul>
+      <li><span>1997</span></li>
+      <li><span>1998</span></li>
+      <li><span>1999</span></li>
+      <li><span>2000</span></li>
+      <li><span>2001</span></li>
+      <li><span>2002</span></li>
+      <li><span>2003</span></li>
+      <li><span>2004</span></li>
+      <li><span>2005</span></li>
+      <li><span>2006 - 2010</span></li>
+      <li><span>2011 - 2015</span></li>
+      <li><span>2016 - 2020</span></li>
+      <li><span>2021 - 2025</span></li>
+    </ul>
+  </nav>
+
+  <section class="timeline__section">
+    <div class="wrapper">
+      <h2 class="milestone">1997</h2>
+      <p>
+          По сути, стратегия позиционирования определяет рекламный макет.
+          Маркетинговая активность отражает медиаплан, не считаясь с
+          затратами. Общество потребления переворачивает ролевой поведенческий
+          таргетинг.
+      </p>
+      <h2 class="milestone">1998</h2>
+      <p>
+          По сути, стратегия позиционирования определяет рекламный макет.
+          Маркетинговая активность отражает медиаплан, не считаясь с
+          затратами. Общество потребления переворачивает ролевой поведенческий
+          таргетинг.
+      </p>
+      <p>
+          Рекламный блок, суммируя приведенные примеры, развивает
+          межличностный отраслевой стандарт. Надо сказать, что бюджет на
+          размещение изменяет из ряда вон выходящий креатив, отвоевывая
+          рыночный сегмент. Баланс спроса и предложения интегрирована.
+      </p>
+      <h2 class="milestone">1999</h2>
+      <p>
+          По сути, стратегия позиционирования определяет рекламный макет.
+          Маркетинговая активность отражает медиаплан, не считаясь с
+          затратами. Общество потребления переворачивает ролевой поведенческий
+          таргетинг.
+      </p>
+      <p>
+          Рекламный блок, суммируя приведенные примеры, развивает
+          межличностный отраслевой стандарт. Надо сказать, что бюджет на
+          размещение изменяет из ряда вон выходящий креатив, отвоевывая
+          рыночный сегмент. Баланс спроса и предложения интегрирована.
+      </p>
+      <p>
+          Дело в том, что креатив ускоряет бренд. Бренд, на первый взгляд,
+          многопланово создает имидж. Узнавание бренда, конечно, разнородно
+          отталкивает институциональный клиентский спрос. Стимулирование
+          сбыта, не меняя концепции, изложенной выше, спорадически
+          уравновешивает фирменный рейтинг, повышая конкуренцию. Концепция
+          новой стратегии оправдывает BTL.
+      </p>
+      <h2 class="milestone">2000</h2>
+      <p>
+          По сути, стратегия позиционирования определяет рекламный макет.
+          Маркетинговая активность отражает медиаплан, не считаясь с
+          затратами. Общество потребления переворачивает ролевой поведенческий
+          таргетинг.
+      </p>
+      <p>
+          Рекламный блок, суммируя приведенные примеры, развивает
+          межличностный отраслевой стандарт. Надо сказать, что бюджет на
+          размещение изменяет из ряда вон выходящий креатив, отвоевывая
+          рыночный сегмент. Баланс спроса и предложения интегрирована.
+      </p>
+      <p>
+          Дело в том, что креатив ускоряет бренд. Бренд, на первый взгляд,
+          многопланово создает имидж. Узнавание бренда, конечно, разнородно
+          отталкивает институциональный клиентский спрос. Стимулирование
+          сбыта, не меняя концепции, изложенной выше, спорадически
+          уравновешивает фирменный рейтинг, повышая конкуренцию. Концепция
+          новой стратегии оправдывает BTL.
+      </p>
+      <h2 class="milestone">2001</h2>
+      <p>
+          По сути, стратегия позиционирования определяет рекламный макет.
+          Маркетинговая активность отражает медиаплан, не считаясь с
+          затратами. Общество потребления переворачивает ролевой поведенческий
+          таргетинг.
+      </p>
+      <p>
+          Рекламный блок, суммируя приведенные примеры, развивает
+          межличностный отраслевой стандарт. Надо сказать, что бюджет на
+          размещение изменяет из ряда вон выходящий креатив, отвоевывая
+          рыночный сегмент. Баланс спроса и предложения интегрирована.
+      </p>
+      <p>
+          Дело в том, что креатив ускоряет бренд. Бренд, на первый взгляд,
+          многопланово создает имидж. Узнавание бренда, конечно, разнородно
+          отталкивает институциональный клиентский спрос. Стимулирование
+          сбыта, не меняя концепции, изложенной выше, спорадически
+          уравновешивает фирменный рейтинг, повышая конкуренцию. Концепция
+          новой стратегии оправдывает BTL.
+      </p>
+      <h2 class="milestone">2002</h2>
+      <p>
+          По сути, стратегия позиционирования определяет рекламный макет.
+          Маркетинговая активность отражает медиаплан, не считаясь с
+          затратами. Общество потребления переворачивает ролевой поведенческий
+          таргетинг.
+      </p>
+      <h2 class="milestone">2003</h2>
+      <p>
+          По сути, стратегия позиционирования определяет рекламный макет.
+          Маркетинговая активность отражает медиаплан, не считаясь с
+          затратами. Общество потребления переворачивает ролевой поведенческий
+          таргетинг.
+      </p>
+      <h2 class="milestone">2004</h2>
+      <p>
+          По сути, стратегия позиционирования определяет рекламный макет.
+          Маркетинговая активность отражает медиаплан, не считаясь с
+          затратами. Общество потребления переворачивает ролевой поведенческий
+          таргетинг.
+      </p>
+      <h2 class="milestone">2005</h2>
+      <p>
+          По сути, стратегия позиционирования определяет рекламный макет.
+          Маркетинговая активность отражает медиаплан, не считаясь с
+          затратами. Общество потребления переворачивает ролевой поведенческий
+          таргетинг.
+      </p>
+      <p>
+          Рекламный блок, суммируя приведенные примеры, развивает
+          межличностный отраслевой стандарт. Надо сказать, что бюджет на
+          размещение изменяет из ряда вон выходящий креатив, отвоевывая
+          рыночный сегмент. Баланс спроса и предложения интегрирована.
+      </p>
+      <p>
+          Дело в том, что креатив ускоряет бренд. Бренд, на первый взгляд,
+          многопланово создает имидж. Узнавание бренда, конечно, разнородно
+          отталкивает институциональный клиентский спрос. Стимулирование
+          сбыта, не меняя концепции, изложенной выше, спорадически
+          уравновешивает фирменный рейтинг, повышая конкуренцию. Концепция
+          новой стратегии оправдывает BTL.
+      </p>
+      <h2 class="milestone">2006 - 2010</h2>
+      <p>
+          По сути, стратегия позиционирования определяет рекламный макет.
+          Маркетинговая активность отражает медиаплан, не считаясь с
+          затратами. Общество потребления переворачивает ролевой поведенческий
+          таргетинг.
+      </p>
+      <h2 class="milestone">2011 - 2015</h2>
+      <p>
+          По сути, стратегия позиционирования определяет рекламный макет.
+          Маркетинговая активность отражает медиаплан, не считаясь с
+          затратами. Общество потребления переворачивает ролевой поведенческий
+          таргетинг.
+      </p>
+      <h2 class="milestone">2016 - 2020</h2>
+      <p>
+          По сути, стратегия позиционирования определяет рекламный макет.
+          Маркетинговая активность отражает медиаплан, не считаясь с
+          затратами. Общество потребления переворачивает ролевой поведенческий
+          таргетинг.
+      </p>
+      <h2 class="milestone">2021 - 2025</h2>
+      <p>
+          По сути, стратегия позиционирования определяет рекламный макет.
+          Маркетинговая активность отражает медиаплан, не считаясь с
+          затратами. Общество потребления переворачивает ролевой поведенческий
+          таргетинг.
+      </p>
+    </div>
+  </section>
+</article>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+<script>
+    $(function () {
+      const timeline = $(".timeline__nav");
+      const items = timeline.find("li");
+      const milestones = $(".milestone");
+    
+      const TIMELINE_VALUES = {
+        start: 190,
+        step: 30
+      };
+    
+      let stickyTop = 0;
+      let scrollTarget = false;
+      let isAutoScrolling = false;
+    
+      const prefersReducedMotion = window.matchMedia(
+        "(prefers-reduced-motion: reduce)"
+      ).matches;
+    
+      /* -------------------------------
+         Calculate sticky position
+      -------------------------------- */
+      $(window).on("resize", function () {
+        stickyTop = timeline.offset().top - TIMELINE_VALUES.start;
+      }).trigger("resize");
+    
+      /* -------------------------------
+         Sticky behavior (desktop only)
+      -------------------------------- */
+      $(window).on("scroll", function () {
+        if (window.innerWidth > 768) {
+          timeline.toggleClass(
+            "fixed",
+            $(window).scrollTop() > stickyTop
+          );
+        }
+      });
+    
+      /* -------------------------------
+         Click navigation (larger tap target)
+      -------------------------------- */
+      items.on("click", function () {
+        const index = $(this).index();
+        const target = milestones.eq(index);
+    
+        if (!target.length) return;
+    
+        scrollTarget = index;
+        isAutoScrolling = true;
+    
+        $("html, body")
+          .stop()
+          .animate(
+            { scrollTop: target.offset().top - 80 },
+            prefersReducedMotion ? 0 : 400,
+            function () {
+              setTimeout(() => {
+                scrollTarget = false;
+                isAutoScrolling = false;
+              }, 50);
+            }
+          );
+      });
+    
+      /* -------------------------------
+         Scroll spy
+      -------------------------------- */
+      $(window).on("scroll", function () {
+        let active = 0;
+        const scrollTop = $(window).scrollTop();
+        const viewLine = scrollTop + 100;
+    
+        if (isAutoScrolling && scrollTarget !== false) {
+          active = scrollTarget;
+        } else {
+          milestones.each(function (i) {
+            if ($(this).offset().top > viewLine) return false;
+            active = i;
+          });
+        }
+    
+        /* Move timeline (desktop only) */
+        if (window.innerWidth > 768) {
+          timeline.css(
+            "top",
+            -active * TIMELINE_VALUES.step + TIMELINE_VALUES.start + "px"
+          );
+        }
+    
+        /* Update active state */
+        items.removeClass("active").eq(active).addClass("active");
+    
+        /* -------------------------------
+           Mobile: keep active item visible
+        -------------------------------- */
+        if (window.innerWidth <= 768) {
+          const activeItem = items.eq(active)[0];
+          if (activeItem) {
+            activeItem.scrollIntoView({
+              behavior: prefersReducedMotion ? "auto" : "smooth",
+              inline: "center",
+              block: "nearest"
+            });
+          }
+        }
+      }).trigger("scroll");
+    });
+    </script>
+    
+
+</body>
+</html>
