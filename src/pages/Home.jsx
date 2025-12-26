@@ -12,28 +12,86 @@ const Home = ({
 }) => {
     const navigate = useNavigate();
     const completedTeamMatches = getTeamMatchHistory().sort((a, b) => new Date(b.date) - new Date(a.date));
+    const [showCompetitionModes, setShowCompetitionModes] = React.useState(false);
+
+    const handleFriendlyMatch = () => {
+        setActiveTeamMatch({
+            title: 'Team Match',
+            date: new Date().toISOString().split('T')[0],
+            teamA: { name: 'Team A', players: [] },
+            teamB: { name: 'Team B', players: [] },
+            matches: []
+        });
+        navigate('/team-config');
+    };
 
     return (
-        <div style={{ display: 'flex', flexDirection: 'column', gap: '2rem' }}>
+        <div style={{ display: 'flex', flexDirection: 'column', gap: '2rem', position: 'relative' }}>
+            {showCompetitionModes && (
+                <div style={{
+                    position: 'fixed',
+                    top: 0,
+                    left: 0,
+                    right: 0,
+                    bottom: 0,
+                    backgroundColor: 'rgba(0, 0, 0, 0.5)',
+                    display: 'flex',
+                    alignItems: 'center',
+                    justifyContent: 'center',
+                    zIndex: 1000,
+                    padding: '1rem'
+                }} onClick={() => setShowCompetitionModes(false)}>
+                    <div style={{
+                        backgroundColor: 'var(--color-surface)',
+                        padding: '2rem',
+                        borderRadius: '1rem',
+                        width: '100%',
+                        maxWidth: '400px',
+                        display: 'flex',
+                        flexDirection: 'column',
+                        gap: '1rem'
+                    }} onClick={e => e.stopPropagation()}>
+                        <h3 style={{ textAlign: 'center', marginBottom: '0.5rem' }}>Select Competition Mode</h3>
+
+                        <button
+                            className="btn btn-primary"
+                            style={{ padding: '1rem', display: 'flex', alignItems: 'center', justifyContent: 'center', gap: '0.5rem' }}
+                            onClick={handleFriendlyMatch}
+                        >
+                            <Users size={20} />
+                            Friendly Match
+                        </button>
+
+                        <button
+                            className="btn btn-secondary"
+                            style={{ padding: '1rem', display: 'flex', alignItems: 'center', justifyContent: 'center', gap: '0.5rem', opacity: 0.7, cursor: 'not-allowed' }}
+                            disabled
+                        >
+                            <Trophy size={20} />
+                            Elimination (Coming Soon)
+                        </button>
+
+                        <button
+                            className="btn btn-secondary"
+                            style={{ marginTop: '0.5rem' }}
+                            onClick={() => setShowCompetitionModes(false)}
+                        >
+                            Cancel
+                        </button>
+                    </div>
+                </div>
+            )}
+
             <div className="nav-grid">
                 <div className="nav-card" onClick={() => navigate('/setup')}>
                     <PlusCircle size={32} />
                     <h3>Quick Match</h3>
                     <p style={{ fontSize: '0.875rem', color: 'var(--color-text-muted)' }}>Start a single game</p>
                 </div>
-                <div className="nav-card" onClick={() => {
-                    setActiveTeamMatch({
-                        title: 'Team Match',
-                        date: new Date().toISOString().split('T')[0],
-                        teamA: { name: 'Team A', players: [] },
-                        teamB: { name: 'Team B', players: [] },
-                        matches: []
-                    });
-                    navigate('/team-config');
-                }}>
-                    <Users size={32} />
-                    <h3>Team Match</h3>
-                    <p style={{ fontSize: '0.875rem', color: 'var(--color-text-muted)' }}>Team A vs Team B series</p>
+                <div className="nav-card" onClick={() => setShowCompetitionModes(true)}>
+                    <Trophy size={32} />
+                    <h3>Competition</h3>
+                    <p style={{ fontSize: '0.875rem', color: 'var(--color-text-muted)' }}>Tournaments & Team Matches</p>
                 </div>
                 {activeMatch && !activeTeamMatch && (
                     <div className="nav-card" onClick={() => navigate('/match')} style={{ borderColor: 'var(--color-accent)' }}>

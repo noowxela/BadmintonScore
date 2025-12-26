@@ -1,9 +1,10 @@
 import React, { useState, useEffect } from 'react';
-import { RotateCcw, Save, Trophy, Home } from 'lucide-react';
+import { RotateCcw, Save, Trophy, Home, ArrowLeftRight } from 'lucide-react';
 
 const ScoreBoard = ({ match, onMatchComplete, onCancel, onNavigateHome, hasMoreMatches, teamAName = 'Team 1', teamBName = 'Team 2' }) => {
     const [currentMatch, setCurrentMatch] = useState(match);
     const [winner, setWinner] = useState(null);
+    const [isSwapped, setIsSwapped] = useState(false);
 
     useEffect(() => {
         checkWinner(currentMatch.score1, currentMatch.score2);
@@ -81,6 +82,13 @@ const ScoreBoard = ({ match, onMatchComplete, onCancel, onNavigateHome, hasMoreM
         return team === 1 ? teamAName : teamBName;
     };
 
+    // Derived state for display based on swap
+    const leftTeamId = isSwapped ? 2 : 1;
+    const rightTeamId = isSwapped ? 1 : 2;
+
+    const leftColor = leftTeamId === 1 ? 'var(--color-primary)' : 'var(--color-accent)';
+    const rightColor = rightTeamId === 1 ? 'var(--color-primary)' : 'var(--color-accent)';
+
     return (
         <div className="container" style={{ padding: 0, maxWidth: '100%', height: '100dvh', overflow: 'hidden', display: 'flex', flexDirection: 'column' }}>
             {/* Header / Score Display */}
@@ -99,29 +107,49 @@ const ScoreBoard = ({ match, onMatchComplete, onCancel, onNavigateHome, hasMoreM
                     </div>
                 )}
                 <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', maxWidth: '600px', margin: '0 auto' }}>
+                    {/* Left Side */}
                     <div style={{ flex: 1 }}>
-                        <div style={{ fontSize: '0.75rem', color: 'var(--color-primary)', fontWeight: 600, marginBottom: '0.25rem' }}>
-                            {getTeamName(1)}
+                        <div style={{ fontSize: '0.75rem', color: leftColor, fontWeight: 600, marginBottom: '0.25rem' }}>
+                            {getTeamName(leftTeamId)}
                         </div>
                         <div style={{ fontSize: '0.875rem', color: 'var(--color-text-muted)', marginBottom: '0.5rem' }}>
-                            {getPlayerNames(1)}
+                            {getPlayerNames(leftTeamId)}
                         </div>
-                        <div style={{ fontSize: '4rem', fontWeight: 800, lineHeight: 1, color: winner === 1 ? 'var(--color-primary)' : 'inherit', display: 'flex', alignItems: 'center', justifyContent: 'center', gap: '0.5rem' }}>
-                            {currentMatch.score1}
+                        <div style={{ fontSize: '4rem', fontWeight: 800, lineHeight: 1, color: winner === leftTeamId ? leftColor : 'inherit', display: 'flex', alignItems: 'center', justifyContent: 'center', gap: '0.5rem' }}>
+                            {leftTeamId === 1 ? currentMatch.score1 : currentMatch.score2}
                         </div>
                     </div>
 
-                    <div style={{ padding: '0 1rem', fontSize: '1.5rem', fontWeight: 600, color: 'var(--color-text-muted)' }}>-</div>
+                    {/* Center Control */}
+                    <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', gap: '0.5rem' }}>
+                        <div style={{ padding: '0 1rem', fontSize: '1.5rem', fontWeight: 600, color: 'var(--color-text-muted)' }}>-</div>
+                        <button
+                            onClick={() => setIsSwapped(!isSwapped)}
+                            style={{
+                                padding: '0.25rem',
+                                borderRadius: '50%',
+                                backgroundColor: 'rgba(255,255,255,0.1)',
+                                color: 'var(--color-text-muted)',
+                                display: 'flex',
+                                alignItems: 'center',
+                                justifyContent: 'center'
+                            }}
+                            title="Switch Position"
+                        >
+                            <ArrowLeftRight size={16} />
+                        </button>
+                    </div>
 
+                    {/* Right Side */}
                     <div style={{ flex: 1 }}>
-                        <div style={{ fontSize: '0.75rem', color: 'var(--color-primary)', fontWeight: 600, marginBottom: '0.25rem' }}>
-                            {getTeamName(2)}
+                        <div style={{ fontSize: '0.75rem', color: rightColor, fontWeight: 600, marginBottom: '0.25rem' }}>
+                            {getTeamName(rightTeamId)}
                         </div>
                         <div style={{ fontSize: '0.875rem', color: 'var(--color-text-muted)', marginBottom: '0.5rem' }}>
-                            {getPlayerNames(2)}
+                            {getPlayerNames(rightTeamId)}
                         </div>
-                        <div style={{ fontSize: '4rem', fontWeight: 800, lineHeight: 1, color: winner === 2 ? 'var(--color-primary)' : 'inherit', display: 'flex', alignItems: 'center', justifyContent: 'center', gap: '0.5rem' }}>
-                            {currentMatch.score2}
+                        <div style={{ fontSize: '4rem', fontWeight: 800, lineHeight: 1, color: winner === rightTeamId ? rightColor : 'inherit', display: 'flex', alignItems: 'center', justifyContent: 'center', gap: '0.5rem' }}>
+                            {rightTeamId === 1 ? currentMatch.score1 : currentMatch.score2}
                         </div>
                     </div>
                 </div>
@@ -136,17 +164,27 @@ const ScoreBoard = ({ match, onMatchComplete, onCancel, onNavigateHome, hasMoreM
                     <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '1rem', flex: 1 }}>
                         <button
                             className="btn btn-score"
-                            onClick={() => addPoint(1)}
+                            onClick={() => addPoint(leftTeamId)}
+                            style={{
+                                borderColor: leftColor,
+                                color: leftColor,
+                                backgroundColor: `color-mix(in srgb, ${leftColor} 10%, transparent)`
+                            }}
                         >
                             +1
-                            <span style={{ fontSize: '0.875rem', marginTop: '0.5rem', opacity: 0.8 }}>{teamAName}</span>
+                            <span style={{ fontSize: '0.875rem', marginTop: '0.5rem', opacity: 0.8 }}>{getTeamName(leftTeamId)}</span>
                         </button>
                         <button
                             className="btn btn-score"
-                            onClick={() => addPoint(2)}
+                            onClick={() => addPoint(rightTeamId)}
+                            style={{
+                                borderColor: rightColor,
+                                color: rightColor,
+                                backgroundColor: `color-mix(in srgb, ${rightColor} 10%, transparent)`
+                            }}
                         >
                             +1
-                            <span style={{ fontSize: '0.875rem', marginTop: '0.5rem', opacity: 0.8 }}>{teamBName}</span>
+                            <span style={{ fontSize: '0.875rem', marginTop: '0.5rem', opacity: 0.8 }}>{getTeamName(rightTeamId)}</span>
                         </button>
                     </div>
                 ) : (
