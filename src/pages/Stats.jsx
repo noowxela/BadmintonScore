@@ -41,6 +41,10 @@ const Stats = () => {
                 </div>
             </div>
 
+            <p style={{ color: 'var(--color-text-muted)', fontSize: '0.8rem', marginTop: '-0.25rem' }}>
+                Names are normalized via the player roster (aliases/merges). Manage roster under Players.
+            </p>
+
             {viewMode === 'table' ? (
                 <div className="card" style={{ padding: '0', overflow: 'hidden' }}>
                     <div style={{ overflowX: 'auto' }}>

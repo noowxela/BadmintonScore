@@ -1,5 +1,7 @@
 import React, { useState } from 'react';
 import { Users, User } from 'lucide-react';
+import PlayerNameInput from '../components/PlayerNameInput';
+import { ensurePlayersFromNames } from '../utils/storage';
 
 const MatchSetup = ({ onStartMatch, onCancel }) => {
     const [gameType, setGameType] = useState('singles');
@@ -12,19 +14,22 @@ const MatchSetup = ({ onStartMatch, onCancel }) => {
 
     const handleSubmit = (e) => {
         e.preventDefault();
-        // Basic validation
         if (!players.p1 || !players.p2) return;
         if (gameType === 'doubles' && (!players.p3 || !players.p4)) return;
 
+        const names = [players.p1, players.p2];
+        if (gameType === 'doubles') names.push(players.p3, players.p4);
+        ensurePlayersFromNames(names);
+
         onStartMatch({
             type: gameType,
-            player1: players.p1,
-            player2: players.p2,
-            player3: gameType === 'doubles' ? players.p3 : null,
-            player4: gameType === 'doubles' ? players.p4 : null,
+            player1: players.p1.trim(),
+            player2: players.p2.trim(),
+            player3: gameType === 'doubles' ? players.p3.trim() : null,
+            player4: gameType === 'doubles' ? players.p4.trim() : null,
             score1: 0,
             score2: 0,
-            history: [] // For undo functionality
+            history: []
         });
     };
 
@@ -55,20 +60,20 @@ const MatchSetup = ({ onStartMatch, onCancel }) => {
             <form onSubmit={handleSubmit}>
                 <div className="input-group">
                     <label className="label">Team 1</label>
-                    <input
-                        className="input"
+                    <PlayerNameInput
+                        listId="quick-match-p1"
                         placeholder="Player 1 Name"
                         value={players.p1}
-                        onChange={(e) => setPlayers({ ...players, p1: e.target.value })}
+                        onChange={(value) => setPlayers({ ...players, p1: value })}
                         required
                         style={{ marginBottom: '0.5rem' }}
                     />
                     {gameType === 'doubles' && (
-                        <input
-                            className="input"
+                        <PlayerNameInput
+                            listId="quick-match-p3"
                             placeholder="Player 3 Name"
                             value={players.p3}
-                            onChange={(e) => setPlayers({ ...players, p3: e.target.value })}
+                            onChange={(value) => setPlayers({ ...players, p3: value })}
                             required
                         />
                     )}
@@ -76,20 +81,20 @@ const MatchSetup = ({ onStartMatch, onCancel }) => {
 
                 <div className="input-group">
                     <label className="label">Team 2</label>
-                    <input
-                        className="input"
+                    <PlayerNameInput
+                        listId="quick-match-p2"
                         placeholder="Player 2 Name"
                         value={players.p2}
-                        onChange={(e) => setPlayers({ ...players, p2: e.target.value })}
+                        onChange={(value) => setPlayers({ ...players, p2: value })}
                         required
                         style={{ marginBottom: '0.5rem' }}
                     />
                     {gameType === 'doubles' && (
-                        <input
-                            className="input"
+                        <PlayerNameInput
+                            listId="quick-match-p4"
                             placeholder="Player 4 Name"
                             value={players.p4}
-                            onChange={(e) => setPlayers({ ...players, p4: e.target.value })}
+                            onChange={(value) => setPlayers({ ...players, p4: value })}
                             required
                         />
                     )}
