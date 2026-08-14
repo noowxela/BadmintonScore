@@ -138,7 +138,11 @@ const TeamMatchDashboard = ({ teamMatch, onPlayMatch, onFinishTeamMatch }) => {
                                 style={{ marginTop: '2rem' }}
                                 onClick={onFinishTeamMatch}
                             >
-                                Finish & Save Team Match
+                                {teamMatch.league?.matchId
+                                  ? 'Save & Back to Bracket'
+                                  : teamMatch.league
+                                    ? 'Back to League'
+                                    : 'Finish & Save Team Match'}
                             </button>
                         )}
                     </div>

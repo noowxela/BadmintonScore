@@ -1,7 +1,8 @@
 import React from 'react';
 import { useNavigate } from 'react-router-dom';
 import { PlusCircle, History as HistoryIcon, BarChart2, Activity, Users, FileText, Edit, Trophy } from 'lucide-react';
-import { getTeamMatchHistory } from '../utils/storage';
+import { getKnockoutTournaments, getTeamMatchHistory } from '../utils/storage';
+import { ensureLaksaBowl50, LAKSA_BOWL_ID, LEAGUE_LOGO } from '../data/laksaBowl50';
 
 const Home = ({
     activeMatch,
@@ -11,8 +12,11 @@ const Home = ({
     handleLoadDraft
 }) => {
     const navigate = useNavigate();
+    ensureLaksaBowl50();
     const completedTeamMatches = getTeamMatchHistory().sort((a, b) => new Date(b.date) - new Date(a.date));
+    const knockoutTournaments = getKnockoutTournaments().sort((a, b) => new Date(b.lastModified || b.date) - new Date(a.lastModified || a.date));
     const [showCompetitionModes, setShowCompetitionModes] = React.useState(false);
+    const otherKnockouts = knockoutTournaments.filter(tournament => tournament.id !== LAKSA_BOWL_ID);
 
     const handleFriendlyMatch = () => {
         setActiveTeamMatch({
@@ -64,11 +68,11 @@ const Home = ({
 
                         <button
                             className="btn btn-secondary"
-                            style={{ padding: '1rem', display: 'flex', alignItems: 'center', justifyContent: 'center', gap: '0.5rem', opacity: 0.7, cursor: 'not-allowed' }}
-                            disabled
+                            style={{ padding: '1rem', display: 'flex', alignItems: 'center', justifyContent: 'center', gap: '0.5rem' }}
+                            onClick={() => navigate('/knockout-setup')}
                         >
                             <Trophy size={20} />
-                            Elimination (Coming Soon)
+                            Elimination
                         </button>
 
                         <button
@@ -111,6 +115,46 @@ const Home = ({
                     <p style={{ fontSize: '0.875rem', color: 'var(--color-text-muted)' }}>Player performance stats</p>
                 </div>
             </div>
+
+            <div
+                className="card"
+                style={{ padding: '1.1rem', cursor: 'pointer', borderLeft: '4px solid var(--color-accent)' }}
+                onClick={() => navigate(`/league/${LAKSA_BOWL_ID}`)}
+            >
+                    <div style={{ fontSize: '0.75rem', color: 'var(--color-accent)', fontWeight: 700, marginBottom: '0.45rem' }}>EXAMPLE LEAGUE</div>
+                    <img src={LEAGUE_LOGO} alt="LAKSA BOWL 2026" className="home-league-logo" />
+                    <div style={{ fontSize: '0.875rem', color: 'var(--color-text-muted)', marginTop: '0.25rem' }}>
+                        Laksa group internal match · 9 teams · Group A/B · winner pool + loser pool
+                    </div>
+            </div>
+
+            {otherKnockouts.length > 0 && (
+                <div>
+                    <h3 style={{ marginBottom: '1rem', display: 'flex', alignItems: 'center', gap: '0.5rem' }}>
+                        <Trophy size={20} /> Knockout brackets
+                    </h3>
+                    <div style={{ display: 'grid', gap: '1rem' }}>
+                        {otherKnockouts.map(tournament => (
+                            <div
+                                key={tournament.id}
+                                className="card"
+                                style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', padding: '1rem', cursor: 'pointer' }}
+                                onClick={() => navigate(tournament.format === 'league-knockout' ? `/league/${tournament.id}` : `/knockout/${tournament.id}`)}
+                            >
+                                <div>
+                                    <div style={{ fontWeight: 600, marginBottom: '0.25rem' }}>{tournament.title}</div>
+                                    <div style={{ fontSize: '0.875rem', color: 'var(--color-text-muted)' }}>
+                                        {tournament.date} • {tournament.events?.length || 0} {(tournament.events?.length || 0) === 1 ? 'category' : 'categories'}
+                                    </div>
+                                </div>
+                                <button className="btn btn-secondary" style={{ width: 'auto', padding: '0.5rem 0.75rem' }}>
+                                    Open
+                                </button>
+                            </div>
+                        ))}
+                    </div>
+                </div>
+            )}
 
             {savedConfigs.length > 0 && (
                 <div>

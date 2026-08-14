@@ -205,7 +205,11 @@ const ScoreBoard = ({ match, onMatchComplete, onCancel, onNavigateHome, hasMoreM
                         <div style={{ display: 'flex', gap: '1rem', flexDirection: 'column' }}>
                             <button className="btn btn-primary" onClick={handleFinish}>
                                 <Save size={18} style={{ marginRight: '0.5rem' }} />
-                                {hasMoreMatches ? 'Save & Back Team Match page' : 'Save Match'}
+                                {currentMatch.knockout
+                                  ? 'Save & Back to Bracket'
+                                  : hasMoreMatches
+                                    ? 'Save & Back Team Match page'
+                                    : 'Save Match'}
                             </button>
                         </div>
                     ) : (

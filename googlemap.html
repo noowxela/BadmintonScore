@@ -1,0 +1,227 @@
+<html lang="en"><head>
+  <meta charset="UTF-8">
+  
+
+    <link rel="apple-touch-icon" type="image/png" href="https://cpwebassets.codepen.io/assets/favicon/apple-touch-icon-5ae1a0698dcc2402e9712f7d01ed509a57814f994c660df9f7a952f3060705ee.png">
+
+    <meta name="apple-mobile-web-app-title" content="CodePen">
+
+    <link rel="icon" type="image/x-icon" href="https://cpwebassets.codepen.io/assets/favicon/favicon-aec34940fbc1a6e787974dcd360f2c6b63348d4b1f4e06c77743096d55480f33.ico">
+
+    <link rel="mask-icon" type="image/x-icon" href="https://cpwebassets.codepen.io/assets/favicon/logo-pin-b4b4269c16397ad2f0f7a01bcdf513a1994f4c94b8af2f191c09eb0d601762b1.svg" color="#111">
+
+
+
+  
+    <script src="https://cpwebassets.codepen.io/assets/common/stopExecutionOnTimeout-2c7831bb44f98c1391d6a4ffda0e1fd302503391ca806e7fcc7b9b87197aec26.js"></script>
+
+
+  <title>Resize Timelapse</title>
+
+    <link rel="canonical" href="https://codepen.io/M4TJOE/pen/jObbyJv">
+  
+  
+  
+  
+<style>
+@import url("https://fonts.googleapis.com/css2?family=Roboto:wght@100;300;400;700&display=swap");
+
+body {
+  margin: 0;
+  padding: 0;
+  font-family: "Roboto", sans-serif;
+}
+
+#content {
+  width: 100vw;
+  height: 100vh;
+  /*1984*/
+  background-image: url(https://i.imgur.com/cI4te85.png);
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
+  transition: background-image 0.2s;
+}
+
+#header {
+  font-size: 6em;
+  font-weight: 700;
+  color: #fff;
+  text-align: center;
+  padding-top: 3vh;
+  min-width: 300px;
+}
+
+#header::after {
+  content: "Shenzhen";
+  font-size: 0.4em;
+  display: block;
+  font-weight: 100;
+}
+
+#footer {
+  background: linear-gradient(rgba(0, 0, 0, 0), rgba(0, 0, 0, 1));
+  position: absolute;
+  width: 100vw;
+  height: 20vh;
+  bottom: 0;
+}
+
+ul {
+  list-style-type: none;
+  width: 300px;
+  margin: 5vh auto;
+  padding: 0;
+  color: white;
+}
+li {
+  text-align: center;
+  width: 50px;
+  margin: 5px;
+  float: left;
+  font-weight: 100;
+}
+
+li:nth-child(1) {
+  font-weight: 700;
+}
+
+#resize_animation {
+  color: #fff;
+  position: absolute;
+  display: block;
+  position: relative;
+  width: 140px;
+  margin: 12vh auto 0 auto;
+  text-align: center;
+  font-weight: 100;
+}
+
+#resize_animation::before {
+  content: "<";
+  position: absolute;
+  right: 140px;
+  animation: left_arrow 2s ease infinite alternate;
+}
+
+@keyframes left_arrow {
+  0% {
+    right: 140px;
+  }
+  100% {
+    right: 150px;
+  }
+}
+
+#resize_animation::after {
+  content: ">";
+  position: absolute;
+  left: 140px;
+  animation: right_arrow 2s ease infinite alternate;
+}
+
+@keyframes right_arrow {
+  0% {
+    left: 140px;
+  }
+  100% {
+    left: 150px;
+  }
+}
+
+/*1994*/
+@media (max-width: 1500px) {
+  #content {
+    background-image: url(https://i.imgur.com/KByZAEE.png);
+  }
+
+  li:nth-child(1) {
+    font-weight: 100;
+  }
+
+  li:nth-child(2) {
+    font-weight: 700;
+  }
+}
+
+/*2002*/
+@media (max-width: 1350px) {
+  #content {
+    background-image: url(https://i.imgur.com/jq5gXLH.png);
+  }
+
+  li:nth-child(2) {
+    font-weight: 100;
+  }
+
+  li:nth-child(3) {
+    font-weight: 700;
+  }
+}
+
+/*2011*/
+@media (max-width: 1200px) {
+  #content {
+    background-image: url(https://i.imgur.com/MTg0Rj8.png);
+  }
+
+  li:nth-child(3) {
+    font-weight: 100;
+  }
+
+  li:nth-child(4) {
+    font-weight: 700;
+  }
+}
+
+/*2020*/
+@media (max-width: 1050px) {
+  #content {
+    background-image: url(https://i.imgur.com/1O83EH0.png);
+  }
+
+  li:nth-child(4) {
+    font-weight: 100;
+  }
+
+  li:nth-child(5) {
+    font-weight: 700;
+  }
+}
+</style>
+
+  <script>
+  window.console = window.console || function(t) {};
+</script>
+
+  
+  
+</head>
+
+<body translate="no">
+  <div id="content">
+  <div id="header">深圳市</div>
+  <div id="footer">
+    <ul>
+      <li>1984</li>
+      <li>1994</li>
+      <li>2002</li>
+      <li>2011</li>
+      <li>2020</li>
+    </ul>
+    <div id="resize_animation">
+      resize your window
+    </div>
+  </div>
+</div>
+  
+    <script id="rendered-js">
+//Pictures: Google Earth
+//# sourceURL=pen.js
+  </script>
+
+  
+
+
+
+</body></html>

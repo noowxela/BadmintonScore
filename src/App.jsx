@@ -6,12 +6,18 @@ import History from './pages/History';
 import Stats from './pages/Stats';
 import MatchupConfig from './pages/MatchupConfig';
 import TeamMatchDashboard from './pages/TeamMatchDashboard';
+import KnockoutSetup from './pages/KnockoutSetup';
+import KnockoutBracket from './pages/KnockoutBracket';
+import LeagueDashboard from './pages/LeagueDashboard';
+import LeagueTimetable from './pages/LeagueTimetable';
 import ScoreBoard from './components/ScoreBoard';
 import {
   saveMatch, saveCurrentMatch, getCurrentMatch, clearCurrentMatch,
   saveTeamMatch, saveCurrentTeamMatch, getCurrentTeamMatch, clearCurrentTeamMatch,
-  saveTeamMatchConfig, getTeamMatchConfigs, deleteTeamMatchConfig, getTeamMatchHistory
+  saveTeamMatchConfig, getTeamMatchConfigs, getKnockoutTournament, saveKnockoutTournament
 } from './utils/storage';
+import { applyMatchResult, matchToScoreboard } from './utils/bracket';
+import { tieFromBracketMatch } from './data/laksaBowl50';
 
 function App() {
   const navigate = useNavigate();
@@ -58,7 +64,72 @@ function App() {
     navigate('/match');
   };
 
+  const handlePlayKnockoutMatch = (tournament, event, match) => {
+    if (tournament.format === 'league-knockout' || event.format === 'team-tie') {
+      const tie = tieFromBracketMatch(tournament, event, match);
+      if (!tie) return;
+      setActiveTeamMatch(tie);
+      navigate('/team-dashboard');
+      return;
+    }
+
+    const matchData = {
+      ...matchToScoreboard(event, match),
+      knockout: {
+        tournamentId: tournament.id,
+        eventId: event.id,
+        matchId: match.id,
+        roundName: match.roundName
+      }
+    };
+    setActiveMatch(matchData);
+    navigate('/match');
+  };
+
+  const handleOpenLeagueTie = (tie) => {
+    setActiveTeamMatch({
+      ...tie,
+      league: {
+        ...(tie.league || {}),
+        tournamentId: tie.league?.tournamentId,
+        tieId: tie.id,
+        viewOnly: tie.status === 'completed'
+      }
+    });
+    navigate('/team-dashboard');
+  };
+
+  const handleKnockoutMatchComplete = (finalMatchData) => {
+    const info = finalMatchData.knockout;
+    const tournament = getKnockoutTournament(info.tournamentId);
+    if (!tournament) {
+      clearCurrentMatch();
+      setActiveMatch(null);
+      navigate('/');
+      return;
+    }
+
+    const eventIndex = tournament.events.findIndex(event => event.id === info.eventId);
+    if (eventIndex < 0) {
+      navigate(`/knockout/${tournament.id}`);
+      return;
+    }
+
+    const updatedEvent = applyMatchResult(tournament.events[eventIndex], info.matchId, finalMatchData);
+    saveKnockoutTournament({
+      ...tournament,
+      events: tournament.events.map((event, index) => index === eventIndex ? updatedEvent : event)
+    });
+    clearCurrentMatch();
+    setActiveMatch(null);
+    navigate(`/knockout/${tournament.id}`);
+  };
+
   const handleMatchComplete = (finalMatchData) => {
+    if (finalMatchData?.knockout) {
+      handleKnockoutMatchComplete(finalMatchData);
+      return;
+    }
     if (activeTeamMatch) {
       // Update team match state
       const newMatches = [...activeTeamMatch.matches];
@@ -91,7 +162,12 @@ function App() {
 
   const handleCancelMatch = () => {
     if (window.confirm('Are you sure you want to cancel the current match? Progress will be lost.')) {
-      if (activeTeamMatch) {
+      if (activeMatch?.knockout) {
+        const tournamentId = activeMatch.knockout.tournamentId;
+        clearCurrentMatch();
+        setActiveMatch(null);
+        navigate(`/knockout/${tournamentId}`);
+      } else if (activeTeamMatch) {
         setActiveMatch(null);
         navigate('/team-dashboard');
       } else {
@@ -190,6 +266,35 @@ function App() {
   };
 
   const handleFinishTeamMatch = () => {
+    const league = activeTeamMatch?.league;
+    if (league?.matchId && league?.tournamentId) {
+      const tournament = getKnockoutTournament(league.tournamentId);
+      if (tournament) {
+        const eventIndex = tournament.events.findIndex(event => event.id === league.eventId);
+        if (eventIndex >= 0) {
+          const updatedEvent = applyMatchResult(tournament.events[eventIndex], league.matchId, {
+            score1: activeTeamMatch.scoreA,
+            score2: activeTeamMatch.scoreB
+          });
+          saveKnockoutTournament({
+            ...tournament,
+            events: tournament.events.map((event, index) => index === eventIndex ? updatedEvent : event)
+          });
+        }
+      }
+      clearCurrentTeamMatch();
+      setActiveTeamMatch(null);
+      navigate(`/knockout/${league.tournamentId}`);
+      return;
+    }
+
+    if (league?.tournamentId) {
+      clearCurrentTeamMatch();
+      setActiveTeamMatch(null);
+      navigate(`/league/${league.tournamentId}`);
+      return;
+    }
+
     saveTeamMatch(activeTeamMatch);
     clearCurrentTeamMatch();
     setActiveTeamMatch(null);
@@ -215,10 +320,13 @@ function App() {
 
 
   const isMatchScreen = location.pathname === '/match';
+  const isBracketScreen = location.pathname.startsWith('/knockout/');
+  const isLeagueScreen = location.pathname.startsWith('/league/');
+  const isImmersive = isMatchScreen || isBracketScreen || isLeagueScreen;
 
   return (
-    <div className="container" style={isMatchScreen ? { padding: 0, maxWidth: '100%', height: '100dvh', overflow: 'hidden' } : {}}>
-      {!isMatchScreen && (
+    <div className="container" style={isImmersive ? { padding: 0, maxWidth: '100%', height: '100dvh', overflow: 'hidden' } : {}}>
+      {!isImmersive && (
         <header className="header">
           <div className="title" onClick={() => navigate('/')} style={{ cursor: 'pointer' }}>
             Badminton<span style={{ color: 'var(--color-text)' }}>Score</span>
@@ -244,16 +352,23 @@ function App() {
           } />
           <Route path="/setup" element={<MatchSetup onStartMatch={handleStartMatch} onCancel={() => navigate('/')} />} />
           <Route path="/match" element={
-            <ScoreBoard
-              match={activeMatch}
-              onMatchComplete={handleMatchComplete}
-              onCancel={handleCancelMatch}
-              onNavigateHome={handleNavigateHome}
-              hasMoreMatches={activeTeamMatch && activeTeamMatch.matches.some((m, i) => i !== activeTeamMatch.currentMatchIndex && m.status !== 'completed')}
-              teamAName={activeTeamMatch ? activeTeamMatch.teamA.name : 'Team 1'}
-              teamBName={activeTeamMatch ? activeTeamMatch.teamB.name : 'Team 2'}
-            />
+            activeMatch ? (
+              <ScoreBoard
+                key={activeMatch.knockout?.matchId || 'match'}
+                match={activeMatch}
+                onMatchComplete={handleMatchComplete}
+                onCancel={handleCancelMatch}
+                onNavigateHome={handleNavigateHome}
+                hasMoreMatches={activeTeamMatch && activeTeamMatch.matches.some((m, i) => i !== activeTeamMatch.currentMatchIndex && m.status !== 'completed')}
+                teamAName={activeMatch.knockout ? (activeMatch.pair1Name || 'Pair 1') : (activeTeamMatch ? activeTeamMatch.teamA.name : 'Team 1')}
+                teamBName={activeMatch.knockout ? (activeMatch.pair2Name || 'Pair 2') : (activeTeamMatch ? activeTeamMatch.teamB.name : 'Team 2')}
+              />
+            ) : null
           } />
+          <Route path="/knockout-setup" element={<KnockoutSetup />} />
+          <Route path="/knockout/:id" element={<KnockoutBracket onPlayMatch={handlePlayKnockoutMatch} />} />
+          <Route path="/league/:id/timetable" element={<LeagueTimetable />} />
+          <Route path="/league/:id" element={<LeagueDashboard onOpenTie={handleOpenLeagueTie} />} />
           <Route path="/history" element={<History />} />
           <Route path="/stats" element={<Stats />} />
           <Route path="/team-config" element={
@@ -276,7 +391,7 @@ function App() {
       </main>
 
       {/* Footer */}
-      {!isMatchScreen && (
+      {!isImmersive && (
         <footer style={{ marginTop: '2rem', textAlign: 'center', color: 'var(--color-text-muted)', fontSize: '0.75rem' }}>
           <p>© {new Date().getFullYear()} Badminton Score Recorder</p>
         </footer>

@@ -3,7 +3,8 @@ const STORAGE_KEYS = {
   CURRENT_MATCH: 'badminton_current_match',
   PLAYERS: 'badminton_players',
   TEAM_MATCH_HISTORY: 'badminton_team_match_history',
-  CURRENT_TEAM_MATCH: 'badminton_current_team_match'
+  CURRENT_TEAM_MATCH: 'badminton_current_team_match',
+  KNOCKOUT_TOURNAMENTS: 'badminton_knockout_tournaments'
 };
 
 export const saveMatch = (matchData) => {
@@ -77,6 +78,35 @@ export const getTeamMatchConfigs = () => {
 export const deleteTeamMatchConfig = (id) => {
   const configs = getTeamMatchConfigs().filter(c => c.id !== id);
   localStorage.setItem('badminton_saved_configs', JSON.stringify(configs));
+};
+
+export const saveKnockoutTournament = (tournament) => {
+  const list = getKnockoutTournaments();
+  const existingIndex = list.findIndex(t => t.id === tournament.id);
+  const next = { ...tournament, lastModified: new Date().toISOString() };
+
+  if (existingIndex >= 0) {
+    list[existingIndex] = next;
+  } else {
+    list.push(next);
+  }
+
+  localStorage.setItem(STORAGE_KEYS.KNOCKOUT_TOURNAMENTS, JSON.stringify(list));
+  return next;
+};
+
+export const getKnockoutTournaments = () => {
+  const raw = localStorage.getItem(STORAGE_KEYS.KNOCKOUT_TOURNAMENTS);
+  return raw ? JSON.parse(raw) : [];
+};
+
+export const getKnockoutTournament = (id) => {
+  return getKnockoutTournaments().find(t => String(t.id) === String(id)) || null;
+};
+
+export const deleteKnockoutTournament = (id) => {
+  const list = getKnockoutTournaments().filter(t => String(t.id) !== String(id));
+  localStorage.setItem(STORAGE_KEYS.KNOCKOUT_TOURNAMENTS, JSON.stringify(list));
 };
 
 export const getStats = () => {
