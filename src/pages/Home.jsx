@@ -1,6 +1,6 @@
 import React from 'react';
 import { useNavigate } from 'react-router-dom';
-import { PlusCircle, History as HistoryIcon, BarChart2, Activity, Users, FileText, Edit, Trophy } from 'lucide-react';
+import { PlusCircle, History as HistoryIcon, BarChart2, Activity, Users, FileText, Edit, Trophy, UserRound, Database } from 'lucide-react';
 import { getKnockoutTournaments, getTeamMatchHistory } from '../utils/storage';
 import { ensureLaksaBowl50, LAKSA_BOWL_ID, LEAGUE_LOGO } from '../data/laksaBowl50';
 
@@ -113,6 +113,16 @@ const Home = ({
                     <BarChart2 size={32} />
                     <h3>Statistics</h3>
                     <p style={{ fontSize: '0.875rem', color: 'var(--color-text-muted)' }}>Player performance stats</p>
+                </div>
+                <div className="nav-card" onClick={() => navigate('/players')}>
+                    <UserRound size={32} />
+                    <h3>Players</h3>
+                    <p style={{ fontSize: '0.875rem', color: 'var(--color-text-muted)' }}>Roster, aliases & merges</p>
+                </div>
+                <div className="nav-card" onClick={() => navigate('/data')}>
+                    <Database size={32} />
+                    <h3>Backup</h3>
+                    <p style={{ fontSize: '0.875rem', color: 'var(--color-text-muted)' }}>Export & restore data</p>
                 </div>
             </div>
 

@@ -4,6 +4,8 @@ import Home from './pages/Home';
 import MatchSetup from './pages/MatchSetup';
 import History from './pages/History';
 import Stats from './pages/Stats';
+import Players from './pages/Players';
+import DataBackup from './pages/DataBackup';
 import MatchupConfig from './pages/MatchupConfig';
 import TeamMatchDashboard from './pages/TeamMatchDashboard';
 import KnockoutSetup from './pages/KnockoutSetup';
@@ -14,7 +16,8 @@ import ScoreBoard from './components/ScoreBoard';
 import {
   saveMatch, saveCurrentMatch, getCurrentMatch, clearCurrentMatch,
   saveTeamMatch, saveCurrentTeamMatch, getCurrentTeamMatch, clearCurrentTeamMatch,
-  saveTeamMatchConfig, getTeamMatchConfigs, getKnockoutTournament, saveKnockoutTournament
+  saveTeamMatchConfig, getTeamMatchConfigs, getKnockoutTournament, saveKnockoutTournament,
+  ensurePlayer, syncPlayersFromHistory
 } from './utils/storage';
 import { applyMatchResult, matchToScoreboard } from './utils/bracket';
 import { tieFromBracketMatch } from './data/laksaBowl50';
@@ -42,8 +45,9 @@ function App() {
         if (location.pathname === '/') navigate('/team-dashboard');
       }
     }
-    // Load saved configs
+    // Load saved configs and seed roster from existing history
     setSavedConfigs(getTeamMatchConfigs());
+    syncPlayersFromHistory();
   }, []);
 
   useEffect(() => {
@@ -303,6 +307,7 @@ function App() {
 
   const handleAddPlayer = (teamId, playerName) => {
     if (!activeTeamMatch) return;
+    ensurePlayer(playerName);
 
     setActiveTeamMatch(prev => {
       const teamKey = teamId === 'A' ? 'teamA' : 'teamB';
@@ -371,6 +376,8 @@ function App() {
           <Route path="/league/:id" element={<LeagueDashboard onOpenTie={handleOpenLeagueTie} />} />
           <Route path="/history" element={<History />} />
           <Route path="/stats" element={<Stats />} />
+          <Route path="/players" element={<Players />} />
+          <Route path="/data" element={<DataBackup />} />
           <Route path="/team-config" element={
             <MatchupConfig
               teams={activeTeamMatch}

@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { Users, User, Trash2, Plus, Save, Edit2, X, Calendar } from 'lucide-react';
+import { ensurePlayer, getPlayers } from '../utils/storage';
 
 const MatchupConfig = ({ teams: initialTeams, onStartMatch, onSaveDraft, onBack }) => {
     // Local State for Match Info & Teams
@@ -60,14 +61,16 @@ const MatchupConfig = ({ teams: initialTeams, onStartMatch, onSaveDraft, onBack 
     const handleAddPlayerToTeam = (teamId, name) => {
         const playerName = name || newPlayerName;
         if (!playerName.trim()) return;
+        const trimmed = playerName.trim();
+        ensurePlayer(trimmed);
 
         if (teamId === 'A') {
-            if (!teamA.players.includes(playerName.trim())) {
-                setTeamA(prev => ({ ...prev, players: [...prev.players, playerName.trim()] }));
+            if (!teamA.players.includes(trimmed)) {
+                setTeamA(prev => ({ ...prev, players: [...prev.players, trimmed] }));
             }
         } else {
-            if (!teamB.players.includes(playerName.trim())) {
-                setTeamB(prev => ({ ...prev, players: [...prev.players, playerName.trim()] }));
+            if (!teamB.players.includes(trimmed)) {
+                setTeamB(prev => ({ ...prev, players: [...prev.players, trimmed] }));
             }
         }
         setNewPlayerName('');
@@ -138,6 +141,8 @@ const MatchupConfig = ({ teams: initialTeams, onStartMatch, onSaveDraft, onBack 
 
     const SmartPlayerSelect = ({ value, onChange, teamId, players, placeholder }) => {
         const [inputValue, setInputValue] = useState(value);
+        const rosterNames = getPlayers().map((p) => p.name);
+        const options = [...new Set([...players, ...rosterNames])].sort((a, b) => a.localeCompare(b));
 
         useEffect(() => {
             setInputValue(value);
@@ -153,6 +158,8 @@ const MatchupConfig = ({ teams: initialTeams, onStartMatch, onSaveDraft, onBack 
             // Auto-add player if not exists
             if (!players.includes(trimmed)) {
                 handleAddPlayerToTeam(teamId, trimmed);
+            } else {
+                ensurePlayer(trimmed);
             }
 
             onChange(trimmed);
@@ -176,7 +183,7 @@ const MatchupConfig = ({ teams: initialTeams, onStartMatch, onSaveDraft, onBack 
                     style={{ padding: '0.5rem', fontSize: '0.875rem', width: '100%' }}
                 />
                 <datalist id={`players-${teamId}`}>
-                    {players.map(p => <option key={p} value={p} />)}
+                    {options.map(p => <option key={p} value={p} />)}
                 </datalist>
             </>
         );
