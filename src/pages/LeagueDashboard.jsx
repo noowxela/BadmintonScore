@@ -126,7 +126,9 @@ const GroupTable = ({ title, rows, onViewMatches, onOpenRules }) => (
                     <img className="league-team-logo" src={row.team.logo} alt="" />
                   )}
                   <div>
-                    <strong>{row.team.code}: {row.team.name}</strong>
+                    <strong>
+                      <span className="league-team-code">{row.team.code}:</span> {row.team.name}
+                    </strong>
                     {index < 2 && <span className="league-qual">Winner pool</span>}
                   </div>
                 </div>
