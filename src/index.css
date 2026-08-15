@@ -940,6 +940,85 @@ input, select {
   font-weight: 700;
 }
 
+@media (min-width: 768px) {
+  .league-grid {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    align-items: flex-start;
+    gap: 1.25rem;
+  }
+
+  .league-group {
+    width: max-content;
+    max-width: 100%;
+  }
+
+  .league-group-head {
+    gap: 1rem;
+  }
+
+  .league-group-head h2 {
+    font-size: 1.2rem;
+  }
+
+  .league-group-head button {
+    font-size: 0.88rem;
+    padding: 0.4rem 0.85rem;
+  }
+
+  .league-table {
+    width: auto;
+    table-layout: auto;
+    font-size: 0.9rem;
+  }
+
+  .league-table th,
+  .league-table td {
+    padding: 0.45rem 0.4rem;
+  }
+
+  .league-table th:not(:first-child),
+  .league-table td:not(:first-child) {
+    width: auto;
+    min-width: 2.35rem;
+    padding-left: 0.35rem;
+    padding-right: 0.35rem;
+  }
+
+  .league-table th {
+    font-size: 0.78rem;
+  }
+
+  .league-table td:first-child,
+  .league-table th:first-child {
+    position: static;
+    width: auto;
+    min-width: 0;
+    max-width: none;
+    padding-left: 0.75rem;
+    padding-right: 0.85rem;
+    box-shadow: none;
+  }
+
+  .league-team-cell strong {
+    font-size: 0.9rem;
+    white-space: nowrap;
+    overflow-wrap: normal;
+  }
+
+  .league-qual {
+    font-size: 0.68rem;
+    padding: 0.05rem 0.4rem;
+  }
+
+  .league-group-head .rule-chip,
+  .rule-chip {
+    font-size: 0.7rem;
+    padding: 0.12rem 0.5rem;
+  }
+}
+
 .league-note {
   text-align: center;
   color: var(--color-text-muted);
