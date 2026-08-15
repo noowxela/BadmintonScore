@@ -34,7 +34,7 @@ const RuleLegendModal = ({ onClose }) => (
   <div className="bracket-modal" onClick={onClose}>
     <div className="rule-modal" onClick={e => e.stopPropagation()}>
       <div className="rule-modal-head">
-        <h3><Info size={20} color="#2563eb" /> Legend (Match Stats)</h3>
+        <h3><Info size={20} color="var(--color-primary)" /> Legend (Match Stats)</h3>
         <button type="button" className="rule-close" onClick={onClose} aria-label="Close">
           <X size={18} />
         </button>
@@ -231,7 +231,7 @@ const LeagueDashboard = ({ onOpenTie }) => {
           src={tournament.poster || TEAM_POSTER}
           title="Team assignments"
           alt="Laksa Bowl team assignments poster"
-          icon={<Users size={20} color="#2563eb" />}
+          icon={<Users size={20} color="var(--color-primary)" />}
           onClose={() => setShowPoster(false)}
         />
       )}
@@ -240,7 +240,7 @@ const LeagueDashboard = ({ onOpenTie }) => {
           src={tournament.agendaPoster || AGENDA_POSTER}
           title="Day program flow"
           alt="Laksa Bowl agenda poster"
-          icon={<CalendarDays size={20} color="#eab308" />}
+          icon={<CalendarDays size={20} color="var(--color-accent)" />}
           onClose={() => setShowAgenda(false)}
         />
       )}

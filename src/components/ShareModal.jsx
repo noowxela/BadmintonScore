@@ -51,7 +51,7 @@ const composeQrWithLogo = async (url, logoSrc) => {
     const x = (QR_SIZE - width) / 2;
     const y = (QR_SIZE - height) / 2;
     roundRect(ctx, x - padX, y - padY, width + padX * 2, height + padY * 2, 10);
-    ctx.fillStyle = '#0b1220';
+    ctx.fillStyle = '#1c1c1e';
     ctx.fill();
     ctx.drawImage(logo, x, y, width, height);
   }

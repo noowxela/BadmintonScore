@@ -19,7 +19,7 @@ const TeamMatchDashboard = ({ teamMatch, onPlayMatch, onFinishTeamMatch }) => {
                 backgroundColor: 'var(--color-surface)',
                 padding: '1rem',
                 textAlign: 'center',
-                borderBottom: '1px solid #334155',
+                borderBottom: '1px solid var(--color-border)',
                 zIndex: 10
             }}>
                 <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '1rem' }}>
