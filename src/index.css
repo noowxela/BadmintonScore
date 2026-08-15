@@ -728,7 +728,7 @@ input, select {
 }
 
 .league-team-logo {
-  width: 72px;
+  width: 56px;
   height: 28px;
   object-fit: cover;
   object-position: left center;
@@ -776,7 +776,7 @@ input, select {
 
 .league-grid {
   display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+  grid-template-columns: repeat(auto-fit, minmax(min(100%, 320px), 1fr));
   gap: 1rem;
   padding: 0.75rem 1rem 5rem;
 }
@@ -815,19 +815,32 @@ input, select {
 
 .league-table-wrap {
   overflow-x: auto;
+  -webkit-overflow-scrolling: touch;
+  overscroll-behavior-x: contain;
+  scrollbar-gutter: stable;
 }
 
 .league-table {
-  width: 100%;
-  border-collapse: collapse;
+  width: max-content;
+  min-width: 100%;
+  border-collapse: separate;
+  border-spacing: 0;
   font-size: 0.82rem;
 }
 
 .league-table th,
 .league-table td {
-  padding: 0.55rem 0.6rem;
+  padding: 0.55rem 0.55rem;
   text-align: center;
   border-bottom: 1px solid #e2e8f0;
+  white-space: nowrap;
+}
+
+.league-table th:not(:first-child),
+.league-table td:not(:first-child) {
+  min-width: 2.75rem;
+  padding-left: 0.45rem;
+  padding-right: 0.45rem;
 }
 
 .league-table th {
@@ -838,21 +851,54 @@ input, select {
 .league-table td:first-child,
 .league-table th:first-child {
   text-align: left;
+  position: sticky;
+  left: 0;
+  z-index: 1;
+  background: #fff;
+  min-width: 9.5rem;
+  max-width: 11.5rem;
+  box-shadow: 1px 0 0 #e2e8f0;
+}
+
+.league-table thead th:first-child {
+  z-index: 2;
+  background: #fff;
 }
 
 .league-table tr.is-qualified td {
   background: #f0fdf4;
 }
 
+.league-table tr.is-qualified td:first-child {
+  background: #f0fdf4;
+}
+
+.league-team-head {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.45rem;
+}
+
+.league-team-cell > div {
+  min-width: 0;
+}
+
+.league-team-cell strong {
+  display: block;
+  white-space: normal;
+  line-height: 1.25;
+}
+
 .league-qual {
   display: inline-block;
-  margin-left: 0.4rem;
+  margin-top: 0.2rem;
   font-size: 0.65rem;
   font-weight: 700;
   color: #047857;
   background: #d1fae5;
   border-radius: 999px;
   padding: 0.05rem 0.4rem;
+  white-space: nowrap;
 }
 
 .league-table .is-pos {
