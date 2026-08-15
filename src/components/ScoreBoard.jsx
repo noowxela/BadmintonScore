@@ -96,7 +96,7 @@ const ScoreBoard = ({ match, onMatchComplete, onCancel, onNavigateHome, hasMoreM
                 backgroundColor: 'var(--color-surface)',
                 padding: '2rem 1rem',
                 textAlign: 'center',
-                borderBottom: '1px solid #334155',
+                borderBottom: '1px solid var(--color-border)',
                 position: 'sticky',
                 top: 0,
                 zIndex: 10

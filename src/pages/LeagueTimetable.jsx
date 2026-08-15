@@ -21,7 +21,7 @@ const MatchDetailModal = ({ slot, onClose, onRefresh }) => {
       <div className="match-modal" onClick={e => e.stopPropagation()}>
         <div className="match-modal-head">
           <div>
-            <h3><Trophy size={20} color="#2563eb" /> Match-{titleNo} [{detail.type || slot.type}]</h3>
+            <h3><Trophy size={20} color="var(--color-primary)" /> Match-{titleNo} [{detail.type || slot.type}]</h3>
             <p>Category: {detail.categoryLabel || slot.type} | Level: {detail.level || 'L'}</p>
           </div>
           <button type="button" className="match-modal-close" onClick={onClose}>Close</button>

@@ -323,9 +323,9 @@ const MatchupConfig = ({ teams: initialTeams, onStartMatch, onSaveDraft, onBack 
             <div style={{
                 marginBottom: '2rem',
                 padding: '1.5rem',
-                background: 'linear-gradient(135deg, rgba(139, 92, 246, 0.1), rgba(59, 130, 246, 0.1))',
+                background: 'linear-gradient(135deg, rgba(255, 107, 0, 0.12), rgba(255, 138, 61, 0.08))',
                 borderRadius: 'var(--radius-lg)',
-                border: '1px solid rgba(139, 92, 246, 0.2)'
+                border: '1px solid rgba(255, 107, 0, 0.25)'
             }}>
                 <h3 style={{
                     fontSize: '1.125rem',
