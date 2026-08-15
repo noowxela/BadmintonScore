@@ -100,11 +100,13 @@ const GroupTable = ({ title, rows, onViewMatches, onOpenRules }) => (
       <table className="league-table">
         <thead>
           <tr>
-            <th>Team</th>
             <th>
-              <button type="button" className="rule-chip" onClick={onOpenRules}>
-                Rule
-              </button>
+              <span className="league-team-head">
+                Team
+                <button type="button" className="rule-chip" onClick={onOpenRules}>
+                  Rule
+                </button>
+              </span>
             </th>
             <th>GW</th>
             <th>GL</th>
@@ -129,7 +131,6 @@ const GroupTable = ({ title, rows, onViewMatches, onOpenRules }) => (
                   </div>
                 </div>
               </td>
-              <td></td>
               <td>{row.GW}</td>
               <td>{row.GL}</td>
               <td>{row.TW}</td>
