@@ -400,7 +400,7 @@ function App() {
       {/* Footer */}
       {!isImmersive && (
         <footer style={{ marginTop: '2rem', textAlign: 'center', color: 'var(--color-text-muted)', fontSize: '0.75rem' }}>
-          <p>© {new Date().getFullYear()} Badminton Score Recorder</p>
+          <p>© {new Date().getFullYear()} BadmintonScore</p>
         </footer>
       )}
     </div>
