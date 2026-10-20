@@ -1,11 +1,15 @@
 import React, { useState } from 'react';
+import { Navigate } from 'react-router-dom';
 import { Trophy, LayoutList, CalendarClock } from 'lucide-react';
 import MatchCard from '../components/MatchCard';
 import MatchScheduler from '../components/MatchScheduler';
 
 const TeamMatchDashboard = ({ teamMatch, onPlayMatch, onFinishTeamMatch }) => {
-    const { teamA, teamB, matches, scoreA, scoreB } = teamMatch;
     const [activeTab, setActiveTab] = useState('lineup'); // 'lineup' or 'scheduler'
+
+    if (!teamMatch) return <Navigate to="/" replace />;
+
+    const { teamA, teamB, matches, scoreA, scoreB } = teamMatch;
 
     if (!matches) return <div>Loading...</div>;
 
