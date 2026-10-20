@@ -25,8 +25,7 @@ export default class ErrorBoundary extends React.Component {
           </p>
           <button
             type="button"
-            className="btn btn-primary"
-            style={{ width: '100%' }}
+            className="btn btn-primary btn-block"
             onClick={() => { window.location.href = import.meta.env.BASE_URL; }}
           >
             Back home

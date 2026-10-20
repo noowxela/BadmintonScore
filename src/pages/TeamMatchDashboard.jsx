@@ -138,7 +138,7 @@ const TeamMatchDashboard = ({ teamMatch, onPlayMatch, onFinishTeamMatch }) => {
 
                         {isComplete && (
                             <button
-                                className="btn btn-primary"
+                                className="btn btn-primary btn-block"
                                 style={{ marginTop: '2rem' }}
                                 onClick={onFinishTeamMatch}
                             >

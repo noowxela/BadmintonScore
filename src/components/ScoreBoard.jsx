@@ -78,8 +78,8 @@ const ScoreBoard = ({ match, onMatchComplete, onCancel, hasMoreMatches, teamANam
     const leftTeamId = isSwapped ? 2 : 1;
     const rightTeamId = isSwapped ? 1 : 2;
 
-    const leftColor = leftTeamId === 1 ? 'var(--color-primary)' : 'var(--color-accent)';
-    const rightColor = rightTeamId === 1 ? 'var(--color-primary)' : 'var(--color-accent)';
+    const leftColor = leftTeamId === 1 ? 'var(--color-side-a)' : 'var(--color-side-b)';
+    const rightColor = rightTeamId === 1 ? 'var(--color-side-a)' : 'var(--color-side-b)';
 
     return (
         <div className="container" style={{ padding: 0, maxWidth: '100%', height: '100dvh', overflow: 'hidden', display: 'flex', flexDirection: 'column' }}>
@@ -185,7 +185,7 @@ const ScoreBoard = ({ match, onMatchComplete, onCancel, hasMoreMatches, teamANam
 
                 <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '1rem', marginTop: 'auto' }}>
                     <button
-                        className="btn btn-secondary"
+                        className="btn btn-secondary btn-block"
                         onClick={undo}
                         disabled={!currentMatch.history?.length || winner}
                         style={{ opacity: (!currentMatch.history?.length || winner) ? 0.5 : 1 }}
@@ -195,7 +195,7 @@ const ScoreBoard = ({ match, onMatchComplete, onCancel, hasMoreMatches, teamANam
 
                     {winner ? (
                         <div style={{ display: 'flex', gap: '1rem', flexDirection: 'column' }}>
-                            <button className="btn btn-primary" onClick={handleFinish}>
+                            <button className="btn btn-primary btn-block" onClick={handleFinish}>
                                 <Save size={18} style={{ marginRight: '0.5rem' }} />
                                 {currentMatch.knockout
                                   ? 'Save & Back to Bracket'
@@ -205,7 +205,7 @@ const ScoreBoard = ({ match, onMatchComplete, onCancel, hasMoreMatches, teamANam
                             </button>
                         </div>
                     ) : (
-                        <button className="btn btn-danger" onClick={onCancel}>
+                        <button className="btn btn-danger btn-block" onClick={onCancel}>
                             End Game
                         </button>
                     )}

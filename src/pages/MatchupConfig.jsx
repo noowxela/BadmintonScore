@@ -314,7 +314,7 @@ const MatchupConfig = ({ teams: initialTeams, onStartMatch, onSaveDraft, onBack 
             </div>
 
             <div style={{ marginBottom: '2rem' }}>
-                <button className="btn btn-secondary" style={{ width: '100%', padding: '0.75rem', borderStyle: 'dashed' }} onClick={addMatch}>
+                <button className="btn btn-secondary btn-block" style={{ padding: '0.75rem', borderStyle: 'dashed' }} onClick={addMatch}>
                     <Plus size={16} style={{ marginRight: '0.5rem' }} /> Add Match
                 </button>
             </div>
@@ -387,13 +387,13 @@ const MatchupConfig = ({ teams: initialTeams, onStartMatch, onSaveDraft, onBack 
             </div>
 
             <div style={{ display: 'grid', gap: '1rem' }}>
-                <button className="btn btn-primary" onClick={handleStart}>
+                <button className="btn btn-primary btn-block" onClick={handleStart}>
                     Start Recording Match Score
                 </button>
-                <button className="btn btn-secondary" onClick={handleSaveDraft}>
+                <button className="btn btn-secondary btn-block" onClick={handleSaveDraft}>
                     <Save size={18} style={{ marginRight: '0.5rem' }} /> Save Draft
                 </button>
-                <button className="btn btn-secondary" onClick={onBack}>
+                <button className="btn btn-secondary btn-block" onClick={onBack}>
                     Back
                 </button>
             </div>
@@ -428,7 +428,7 @@ const MatchupConfig = ({ teams: initialTeams, onStartMatch, onSaveDraft, onBack 
                                 <label className="label">Team B Name</label>
                                 <input className="input" value={teamB.name} onChange={(e) => setTeamB({ ...teamB, name: e.target.value })} />
                             </div>
-                            <button className="btn btn-primary" onClick={() => setShowEditInfoModal(false)}>Done</button>
+                            <button className="btn btn-primary btn-block" onClick={() => setShowEditInfoModal(false)}>Done</button>
                         </div>
                     </div>
                 </div>
@@ -490,7 +490,7 @@ const MatchupConfig = ({ teams: initialTeams, onStartMatch, onSaveDraft, onBack 
                             ))}
                         </div>
 
-                        <button className="btn btn-primary" style={{ marginTop: '2rem' }} onClick={() => setShowManagePlayersModal(null)}>
+                        <button className="btn btn-primary btn-block" style={{ marginTop: '2rem' }} onClick={() => setShowManagePlayersModal(null)}>
                             Done
                         </button>
                     </div>

@@ -264,7 +264,7 @@ const LeagueDashboard = ({ onOpenTie }) => {
                 <small>MS · MD · XD</small>
               </button>
             ))}
-            <button type="button" className="btn btn-secondary" onClick={() => setGroupMatches(null)}>Close</button>
+            <button type="button" className="btn btn-secondary btn-block" onClick={() => setGroupMatches(null)}>Close</button>
           </div>
         </div>
       )}

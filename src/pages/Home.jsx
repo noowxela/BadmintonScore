@@ -58,7 +58,7 @@ const Home = ({
                         <h3 style={{ textAlign: 'center', marginBottom: '0.5rem' }}>Select Competition Mode</h3>
 
                         <button
-                            className="btn btn-primary"
+                            className="btn btn-primary btn-block"
                             style={{ padding: '1rem', display: 'flex', alignItems: 'center', justifyContent: 'center', gap: '0.5rem' }}
                             onClick={handleFriendlyMatch}
                         >
@@ -67,7 +67,7 @@ const Home = ({
                         </button>
 
                         <button
-                            className="btn btn-secondary"
+                            className="btn btn-secondary btn-block"
                             style={{ padding: '1rem', display: 'flex', alignItems: 'center', justifyContent: 'center', gap: '0.5rem' }}
                             onClick={() => navigate('/knockout-setup')}
                         >
@@ -76,7 +76,7 @@ const Home = ({
                         </button>
 
                         <button
-                            className="btn btn-secondary"
+                            className="btn btn-secondary btn-block"
                             style={{ marginTop: '0.5rem' }}
                             onClick={() => setShowCompetitionModes(false)}
                         >

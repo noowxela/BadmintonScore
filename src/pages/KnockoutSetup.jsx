@@ -152,7 +152,7 @@ const KnockoutSetup = () => {
 
       {error && <div style={{ color: 'var(--color-danger)', fontSize: '0.9rem' }}>{error}</div>}
 
-      <button className="btn btn-primary" onClick={handleGenerate}>
+      <button className="btn btn-primary btn-block" onClick={handleGenerate}>
         Generate bracket
       </button>
     </div>
