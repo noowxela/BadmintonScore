@@ -6,8 +6,11 @@ import MatchScheduler from '../components/MatchScheduler';
 
 const TeamMatchDashboard = ({ teamMatch, onPlayMatch, onFinishTeamMatch }) => {
     const [activeTab, setActiveTab] = useState('lineup'); // 'lineup' or 'scheduler'
+    const [redirectEmpty] = useState(() => teamMatch == null);
 
-    if (!teamMatch) return <Navigate to="/" replace />;
+    if (!teamMatch) {
+        return redirectEmpty ? <Navigate to="/" replace /> : null;
+    }
 
     const { teamA, teamB, matches, scoreA, scoreB } = teamMatch;
 
@@ -131,12 +134,13 @@ const TeamMatchDashboard = ({ teamMatch, onPlayMatch, onFinishTeamMatch }) => {
                                     key={index}
                                     match={match}
                                     index={index}
+                                    viewOnly={Boolean(teamMatch.league?.viewOnly)}
                                     onPlayMatch={onPlayMatch}
                                 />
                             ))}
                         </div>
 
-                        {isComplete && (
+                        {(isComplete || teamMatch.league?.viewOnly) && (
                             <button
                                 className="btn btn-primary btn-block"
                                 style={{ marginTop: '2rem' }}

@@ -20,6 +20,7 @@ import {
   ensurePlayer, syncPlayersFromHistory
 } from './utils/storage';
 import { applyMatchResult, matchToScoreboard } from './utils/bracket';
+import { applyTieResult } from './utils/league';
 import { tieFromBracketMatch } from './data/laksaBowl50';
 
 function App() {
@@ -29,6 +30,10 @@ function App() {
   const [activeTeamMatch, setActiveTeamMatch] = useState(() => {
     if (getCurrentMatch()) return null;
     const savedTeamMatch = getCurrentTeamMatch();
+    if (savedTeamMatch?.league?.tieId) {
+      clearCurrentTeamMatch();
+      return null;
+    }
     if (!savedTeamMatch?.matches) return null;
     return {
       ...savedTeamMatch,
@@ -55,9 +60,12 @@ function App() {
   }, [activeMatch, activeTeamMatch]);
 
   useEffect(() => {
-    if (activeTeamMatch) {
-      saveCurrentTeamMatch(activeTeamMatch);
+    if (!activeTeamMatch) return;
+    if (activeTeamMatch.league?.tieId) {
+      clearCurrentTeamMatch();
+      return;
     }
+    saveCurrentTeamMatch(activeTeamMatch);
   }, [activeTeamMatch]);
 
   // Quick Match Handlers
@@ -216,6 +224,7 @@ function App() {
   };
 
   const handlePlayTeamMatchGame = (index) => {
+    if (activeTeamMatch?.league?.viewOnly) return;
     const matchToPlay = activeTeamMatch.matches[index];
     const matchData = {
       ...matchToPlay,
@@ -254,6 +263,24 @@ function App() {
       clearCurrentTeamMatch();
       setActiveTeamMatch(null);
       navigate(`/knockout/${league.tournamentId}`);
+      return;
+    }
+
+    if (league?.viewOnly && league?.tieId) {
+      clearCurrentTeamMatch();
+      setActiveTeamMatch(null);
+      navigate(`/league/${league.tournamentId}`);
+      return;
+    }
+
+    if (league?.tieId && league?.tournamentId) {
+      const tournament = getKnockoutTournament(league.tournamentId);
+      if (tournament) {
+        saveKnockoutTournament(applyTieResult(tournament, league.tieId, activeTeamMatch));
+      }
+      clearCurrentTeamMatch();
+      setActiveTeamMatch(null);
+      navigate(`/league/${league.tournamentId}`);
       return;
     }
 
