@@ -1,27 +1,20 @@
-import React, { useState, useEffect } from 'react';
-import { RotateCcw, Save, Trophy, Home, ArrowLeftRight } from 'lucide-react';
+import React, { useState } from 'react';
+import { RotateCcw, Save, ArrowLeftRight } from 'lucide-react';
 
-const ScoreBoard = ({ match, onMatchComplete, onCancel, onNavigateHome, hasMoreMatches, teamAName = 'Team 1', teamBName = 'Team 2' }) => {
+const winnerFromScore = (s1, s2) => {
+    if ((s1 >= 21 || s2 >= 21) && Math.abs(s1 - s2) >= 2) {
+        return s1 > s2 ? 1 : 2;
+    }
+    if (s1 === 30 || s2 === 30) {
+        return s1 > s2 ? 1 : 2;
+    }
+    return null;
+};
+
+const ScoreBoard = ({ match, onMatchComplete, onCancel, hasMoreMatches, teamAName = 'Team 1', teamBName = 'Team 2' }) => {
     const [currentMatch, setCurrentMatch] = useState(match);
-    const [winner, setWinner] = useState(null);
     const [isSwapped, setIsSwapped] = useState(false);
-
-    useEffect(() => {
-        checkWinner(currentMatch.score1, currentMatch.score2);
-    }, [currentMatch.score1, currentMatch.score2]);
-
-    const checkWinner = (s1, s2) => {
-        // Standard win: 21 points and 2 point lead
-        if ((s1 >= 21 || s2 >= 21) && Math.abs(s1 - s2) >= 2) {
-            setWinner(s1 > s2 ? 1 : 2);
-        }
-        // Max points cap at 30 (golden point)
-        else if (s1 === 30 || s2 === 30) {
-            setWinner(s1 > s2 ? 1 : 2);
-        } else {
-            setWinner(null);
-        }
-    };
+    const winner = winnerFromScore(currentMatch.score1, currentMatch.score2);
 
     const addPoint = (team) => {
         if (winner) return;
@@ -48,7 +41,6 @@ const ScoreBoard = ({ match, onMatchComplete, onCancel, onNavigateHome, hasMoreM
             score2: lastState.score2,
             history: newHistory
         }));
-        setWinner(null);
     };
 
     const handleFinish = () => {

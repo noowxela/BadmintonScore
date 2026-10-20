@@ -357,7 +357,6 @@ const MatchupConfig = ({ teams: initialTeams, onStartMatch, onSaveDraft, onBack 
                     {['MS', 'WS', 'MD', 'WD', 'XD'].map(category => {
                         const count = matches.filter(m => m.category === category).length;
                         if (count === 0) return null;
-                        const percentage = ((count / matches.length) * 100).toFixed(0);
 
                         return (
                             <div key={category} style={{
