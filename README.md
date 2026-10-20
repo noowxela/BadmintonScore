@@ -1,70 +1,54 @@
 # BadmintonScore
 
-A React-based badminton scoring application with game history tracking and team management.
+Offline badminton scoring and club competition app. Score a single game, run a team tie, build a knockout bracket, or follow a group-stage league. Everything stays in this browser.
 
-## 🚀 Live Demo
+Live site: [https://noowxela.github.io/BadmintonScore/](https://noowxela.github.io/BadmintonScore/)
 
-Visit the live application: [https://noowxela.github.io/BadmintonScore/](https://noowxela.github.io/BadmintonScore/)
+## What it does
 
-## 📦 Deployment
+- **Quick Match** — singles or doubles, first to 21 with a 2-point margin, capped at 30.
+- **Team match** — men’s singles, men’s doubles, and mixed doubles, with a running tie score.
+- **Knockout** — bracket sized to the next power of two, automatic byes, optional bronze match, and a shareable link.
+- **League** — group tables (games, ties, and rally points), winner pool, loser pool, and a court timetable. The built-in LAKSA BOWL 5.0 example loads on the home page.
+- **Players** — one roster, with aliases and merge so “Alex” and “alex” count as the same person.
+- **History and stats** — past games and win/loss totals under the canonical player name.
+- **Backup** — export or import a JSON file. Import can replace everything or merge by id.
 
-This project is automatically deployed to GitHub Pages using GitHub Actions.
+## Data and backup
 
-### Automatic Deployment
+There is no server. Matches, drafts, tournaments, and the roster are stored in `localStorage` on this device. Clearing the browser, or opening the site on another phone, starts from an empty board except for the Laksa Bowl example, which is created again on the home page.
 
-Every push to the `main` branch triggers an automatic deployment:
-1. GitHub Actions builds the application
-2. The build artifacts are deployed to GitHub Pages
-3. Changes are live within a few minutes
+To keep a copy, open **Backup** in the app and download the JSON file. Import that file later with **Replace** (this browser becomes a copy of the file) or **Merge** (records are combined by id).
 
-### Manual Deployment
+## Screenshots
 
-To deploy manually:
+![Home](docs/screenshots/home.png)
 
-```bash
-# Build the project
-npm run build
+![League group stage](docs/screenshots/league.png)
 
-# Preview the production build locally
-npm run preview
-```
+![Scoreboard](docs/screenshots/scoreboard.png)
 
-### Initial GitHub Pages Setup
+## Develop
 
-If this is your first deployment, enable GitHub Pages:
-1. Go to repository **Settings** → **Pages**
-2. Under **Build and deployment**, select **Source**: **GitHub Actions**
-3. The workflow will handle deployments automatically
-
-## 🛠️ Development
-
-### Prerequisites
-
-- Node.js 20 or higher
-- npm
-
-### Installation
+Requires Node.js 20+.
 
 ```bash
-# Install dependencies
-npm install
-
-# Start development server
+npm ci
 npm run dev
-
-# Build for production
-npm run build
-
-# Preview production build
-npm run preview
-
-# Lint code
-npm run lint
 ```
 
-## 🏗️ Built With
+Open the URL Vite prints. The app is served under `/BadmintonScore/`, the same base path as GitHub Pages.
 
-- [React](https://react.dev/) - UI framework
-- [Vite](https://vite.dev/) - Build tool
-- [React Router](https://reactrouter.com/) - Client-side routing
-- [Lucide React](https://lucide.dev/) - Icon library
+```bash
+npm run lint
+npm run build
+npm run preview
+```
+
+`npm run preview` only serves the production build on your machine. It does not deploy.
+
+Pushes to `main` deploy through GitHub Actions (`.github/workflows/deploy.yml`). Pull requests run lint and build (`.github/workflows/ci.yml`).
+
+## Stack
+
+React, Vite, React Router. Styles are in `src/index.css`.
