@@ -41,6 +41,10 @@ const Stats = () => {
                 </div>
             </div>
 
+            <p style={{ color: 'var(--color-text-muted)', fontSize: '0.8rem', marginTop: '-0.25rem' }}>
+                Names are normalized via the player roster (aliases/merges). Manage roster under Players.
+            </p>
+
             {viewMode === 'table' ? (
                 <div className="card" style={{ padding: '0', overflow: 'hidden' }}>
                     <div style={{ overflowX: 'auto' }}>
@@ -75,14 +79,14 @@ const Stats = () => {
                                                 </div>
                                             </td>
                                             <td style={{ padding: '1rem', textAlign: 'center', color: 'var(--color-text-muted)' }}>{data.matches}</td>
-                                            <td style={{ padding: '1rem', textAlign: 'center', color: 'var(--color-primary)', fontWeight: 600 }}>{data.wins}</td>
+                                            <td style={{ padding: '1rem', textAlign: 'center', color: 'var(--color-success)', fontWeight: 600 }}>{data.wins}</td>
                                             <td style={{ padding: '1rem', textAlign: 'center', color: 'var(--color-danger)' }}>{data.losses}</td>
                                             <td style={{ padding: '1rem', textAlign: 'center' }}>
                                                 <span style={{
                                                     padding: '0.25rem 0.5rem',
                                                     borderRadius: 'var(--radius-full)',
-                                                    backgroundColor: winRate >= 50 ? 'rgba(16, 185, 129, 0.1)' : 'rgba(239, 68, 68, 0.1)',
-                                                    color: winRate >= 50 ? 'var(--color-primary)' : 'var(--color-danger)',
+                                                    backgroundColor: winRate >= 50 ? 'rgba(52, 199, 89, 0.12)' : 'rgba(255, 59, 48, 0.12)',
+                                                    color: winRate >= 50 ? 'var(--color-success)' : 'var(--color-danger)',
                                                     fontSize: '0.75rem',
                                                     fontWeight: 600
                                                 }}>
@@ -107,8 +111,8 @@ const Stats = () => {
                                     <div style={{
                                         padding: '0.25rem 0.75rem',
                                         borderRadius: 'var(--radius-full)',
-                                        backgroundColor: winRate >= 50 ? 'rgba(16, 185, 129, 0.1)' : 'rgba(239, 68, 68, 0.1)',
-                                        color: winRate >= 50 ? 'var(--color-primary)' : 'var(--color-danger)',
+                                        backgroundColor: winRate >= 50 ? 'rgba(52, 199, 89, 0.12)' : 'rgba(255, 59, 48, 0.12)',
+                                        color: winRate >= 50 ? 'var(--color-success)' : 'var(--color-danger)',
                                         fontSize: '0.875rem',
                                         fontWeight: 600
                                     }}>
@@ -123,7 +127,7 @@ const Stats = () => {
                                     </div>
                                     <div style={{ backgroundColor: 'rgba(255,255,255,0.03)', padding: '0.75rem', borderRadius: 'var(--radius-md)' }}>
                                         <div style={{ fontSize: '0.75rem', color: 'var(--color-text-muted)', marginBottom: '0.25rem' }}>Wins</div>
-                                        <div style={{ fontWeight: 600, color: 'var(--color-primary)' }}>{data.wins}</div>
+                                        <div style={{ fontWeight: 600, color: 'var(--color-success)' }}>{data.wins}</div>
                                     </div>
                                     <div style={{ backgroundColor: 'rgba(255,255,255,0.03)', padding: '0.75rem', borderRadius: 'var(--radius-md)' }}>
                                         <div style={{ fontSize: '0.75rem', color: 'var(--color-text-muted)', marginBottom: '0.25rem' }}>Losses</div>

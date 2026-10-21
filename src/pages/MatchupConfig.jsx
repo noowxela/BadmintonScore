@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { Users, User, Trash2, Plus, Save, Edit2, X, Calendar } from 'lucide-react';
+import { ensurePlayer, getPlayers } from '../utils/storage';
 
 const MatchupConfig = ({ teams: initialTeams, onStartMatch, onSaveDraft, onBack }) => {
     // Local State for Match Info & Teams
@@ -60,14 +61,16 @@ const MatchupConfig = ({ teams: initialTeams, onStartMatch, onSaveDraft, onBack 
     const handleAddPlayerToTeam = (teamId, name) => {
         const playerName = name || newPlayerName;
         if (!playerName.trim()) return;
+        const trimmed = playerName.trim();
+        ensurePlayer(trimmed);
 
         if (teamId === 'A') {
-            if (!teamA.players.includes(playerName.trim())) {
-                setTeamA(prev => ({ ...prev, players: [...prev.players, playerName.trim()] }));
+            if (!teamA.players.includes(trimmed)) {
+                setTeamA(prev => ({ ...prev, players: [...prev.players, trimmed] }));
             }
         } else {
-            if (!teamB.players.includes(playerName.trim())) {
-                setTeamB(prev => ({ ...prev, players: [...prev.players, playerName.trim()] }));
+            if (!teamB.players.includes(trimmed)) {
+                setTeamB(prev => ({ ...prev, players: [...prev.players, trimmed] }));
             }
         }
         setNewPlayerName('');
@@ -138,6 +141,8 @@ const MatchupConfig = ({ teams: initialTeams, onStartMatch, onSaveDraft, onBack 
 
     const SmartPlayerSelect = ({ value, onChange, teamId, players, placeholder }) => {
         const [inputValue, setInputValue] = useState(value);
+        const rosterNames = getPlayers().map((p) => p.name);
+        const options = [...new Set([...players, ...rosterNames])].sort((a, b) => a.localeCompare(b));
 
         useEffect(() => {
             setInputValue(value);
@@ -153,6 +158,8 @@ const MatchupConfig = ({ teams: initialTeams, onStartMatch, onSaveDraft, onBack 
             // Auto-add player if not exists
             if (!players.includes(trimmed)) {
                 handleAddPlayerToTeam(teamId, trimmed);
+            } else {
+                ensurePlayer(trimmed);
             }
 
             onChange(trimmed);
@@ -176,7 +183,7 @@ const MatchupConfig = ({ teams: initialTeams, onStartMatch, onSaveDraft, onBack 
                     style={{ padding: '0.5rem', fontSize: '0.875rem', width: '100%' }}
                 />
                 <datalist id={`players-${teamId}`}>
-                    {players.map(p => <option key={p} value={p} />)}
+                    {options.map(p => <option key={p} value={p} />)}
                 </datalist>
             </>
         );
@@ -307,7 +314,7 @@ const MatchupConfig = ({ teams: initialTeams, onStartMatch, onSaveDraft, onBack 
             </div>
 
             <div style={{ marginBottom: '2rem' }}>
-                <button className="btn btn-secondary" style={{ width: '100%', padding: '0.75rem', borderStyle: 'dashed' }} onClick={addMatch}>
+                <button className="btn btn-secondary btn-block" style={{ padding: '0.75rem', borderStyle: 'dashed' }} onClick={addMatch}>
                     <Plus size={16} style={{ marginRight: '0.5rem' }} /> Add Match
                 </button>
             </div>
@@ -316,9 +323,9 @@ const MatchupConfig = ({ teams: initialTeams, onStartMatch, onSaveDraft, onBack 
             <div style={{
                 marginBottom: '2rem',
                 padding: '1.5rem',
-                background: 'linear-gradient(135deg, rgba(139, 92, 246, 0.1), rgba(59, 130, 246, 0.1))',
+                background: 'linear-gradient(135deg, rgba(255, 107, 0, 0.12), rgba(255, 138, 61, 0.08))',
                 borderRadius: 'var(--radius-lg)',
-                border: '1px solid rgba(139, 92, 246, 0.2)'
+                border: '1px solid rgba(255, 107, 0, 0.25)'
             }}>
                 <h3 style={{
                     fontSize: '1.125rem',
@@ -350,7 +357,6 @@ const MatchupConfig = ({ teams: initialTeams, onStartMatch, onSaveDraft, onBack 
                     {['MS', 'WS', 'MD', 'WD', 'XD'].map(category => {
                         const count = matches.filter(m => m.category === category).length;
                         if (count === 0) return null;
-                        const percentage = ((count / matches.length) * 100).toFixed(0);
 
                         return (
                             <div key={category} style={{
@@ -381,13 +387,13 @@ const MatchupConfig = ({ teams: initialTeams, onStartMatch, onSaveDraft, onBack 
             </div>
 
             <div style={{ display: 'grid', gap: '1rem' }}>
-                <button className="btn btn-primary" onClick={handleStart}>
+                <button className="btn btn-primary btn-block" onClick={handleStart}>
                     Start Recording Match Score
                 </button>
-                <button className="btn btn-secondary" onClick={handleSaveDraft}>
+                <button className="btn btn-secondary btn-block" onClick={handleSaveDraft}>
                     <Save size={18} style={{ marginRight: '0.5rem' }} /> Save Draft
                 </button>
-                <button className="btn btn-secondary" onClick={onBack}>
+                <button className="btn btn-secondary btn-block" onClick={onBack}>
                     Back
                 </button>
             </div>
@@ -422,7 +428,7 @@ const MatchupConfig = ({ teams: initialTeams, onStartMatch, onSaveDraft, onBack 
                                 <label className="label">Team B Name</label>
                                 <input className="input" value={teamB.name} onChange={(e) => setTeamB({ ...teamB, name: e.target.value })} />
                             </div>
-                            <button className="btn btn-primary" onClick={() => setShowEditInfoModal(false)}>Done</button>
+                            <button className="btn btn-primary btn-block" onClick={() => setShowEditInfoModal(false)}>Done</button>
                         </div>
                     </div>
                 </div>
@@ -484,7 +490,7 @@ const MatchupConfig = ({ teams: initialTeams, onStartMatch, onSaveDraft, onBack 
                             ))}
                         </div>
 
-                        <button className="btn btn-primary" style={{ marginTop: '2rem' }} onClick={() => setShowManagePlayersModal(null)}>
+                        <button className="btn btn-primary btn-block" style={{ marginTop: '2rem' }} onClick={() => setShowManagePlayersModal(null)}>
                             Done
                         </button>
                     </div>
