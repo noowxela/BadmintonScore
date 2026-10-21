@@ -90,3 +90,23 @@ export const qualifyPools = (teams, ties) => {
     loser: [...groupA.slice(2), ...groupB.slice(2)].map(row => row.team)
   };
 };
+
+export const applyTieResult = (tournament, tieId, teamMatch) => {
+  const scoreA = Number(teamMatch?.scoreA) || 0;
+  const scoreB = Number(teamMatch?.scoreB) || 0;
+  const ties = (tournament.ties || []).map((tie) => {
+    if (String(tie.id) !== String(tieId)) return tie;
+    let winnerId = null;
+    if (scoreA > scoreB) winnerId = tie.teamAId;
+    else if (scoreB > scoreA) winnerId = tie.teamBId;
+    return {
+      ...tie,
+      matches: teamMatch.matches,
+      scoreA,
+      scoreB,
+      status: 'completed',
+      winnerId
+    };
+  });
+  return { ...tournament, ties };
+};

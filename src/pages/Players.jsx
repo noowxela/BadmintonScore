@@ -154,7 +154,7 @@ const Players = () => {
               ))}
             </select>
           </div>
-          <button type="submit" className="btn btn-secondary">Merge</button>
+          <button type="submit" className="btn btn-secondary btn-block">Merge</button>
         </form>
       )}
 

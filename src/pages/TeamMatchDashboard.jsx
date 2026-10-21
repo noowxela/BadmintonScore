@@ -1,11 +1,18 @@
 import React, { useState } from 'react';
+import { Navigate } from 'react-router-dom';
 import { Trophy, LayoutList, CalendarClock } from 'lucide-react';
 import MatchCard from '../components/MatchCard';
 import MatchScheduler from '../components/MatchScheduler';
 
 const TeamMatchDashboard = ({ teamMatch, onPlayMatch, onFinishTeamMatch }) => {
-    const { teamA, teamB, matches, scoreA, scoreB } = teamMatch;
     const [activeTab, setActiveTab] = useState('lineup'); // 'lineup' or 'scheduler'
+    const [redirectEmpty] = useState(() => teamMatch == null);
+
+    if (!teamMatch) {
+        return redirectEmpty ? <Navigate to="/" replace /> : null;
+    }
+
+    const { teamA, teamB, matches, scoreA, scoreB } = teamMatch;
 
     if (!matches) return <div>Loading...</div>;
 
@@ -127,14 +134,15 @@ const TeamMatchDashboard = ({ teamMatch, onPlayMatch, onFinishTeamMatch }) => {
                                     key={index}
                                     match={match}
                                     index={index}
+                                    viewOnly={Boolean(teamMatch.league?.viewOnly)}
                                     onPlayMatch={onPlayMatch}
                                 />
                             ))}
                         </div>
 
-                        {isComplete && (
+                        {(isComplete || teamMatch.league?.viewOnly) && (
                             <button
-                                className="btn btn-primary"
+                                className="btn btn-primary btn-block"
                                 style={{ marginTop: '2rem' }}
                                 onClick={onFinishTeamMatch}
                             >

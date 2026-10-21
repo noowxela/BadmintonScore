@@ -1,7 +1,7 @@
 import React from 'react';
 import { Play, CheckCircle } from 'lucide-react';
 
-const MatchCard = ({ match, index, onPlayMatch }) => {
+const MatchCard = ({ match, index, onPlayMatch, viewOnly = false }) => {
     return (
         <div style={{
             backgroundColor: 'var(--color-surface)',
@@ -28,7 +28,7 @@ const MatchCard = ({ match, index, onPlayMatch }) => {
                     </div>
                 </div>
 
-                {match.status === 'completed' ? (
+                {match.status === 'completed' || viewOnly ? (
                     <div style={{ padding: '0 1rem', fontWeight: 700, fontSize: '1.25rem' }}>
                         <span style={{ color: match.score1 > match.score2 ? 'var(--color-primary)' : 'inherit' }}>{match.score1}</span>
                         <span style={{ color: 'var(--color-text-muted)', margin: '0 0.25rem' }}>-</span>

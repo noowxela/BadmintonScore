@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import { Routes, Route, useNavigate, useLocation } from 'react-router-dom';
 import Home from './pages/Home';
 import MatchSetup from './pages/MatchSetup';
@@ -20,35 +20,38 @@ import {
   ensurePlayer, syncPlayersFromHistory
 } from './utils/storage';
 import { applyMatchResult, matchToScoreboard } from './utils/bracket';
+import { applyTieResult } from './utils/league';
 import { tieFromBracketMatch } from './data/laksaBowl50';
 
 function App() {
   const navigate = useNavigate();
   const location = useLocation();
-  const [activeMatch, setActiveMatch] = useState(null);
-  const [activeTeamMatch, setActiveTeamMatch] = useState(null);
-  const [savedConfigs, setSavedConfigs] = useState([]);
+  const [activeMatch, setActiveMatch] = useState(() => getCurrentMatch());
+  const [activeTeamMatch, setActiveTeamMatch] = useState(() => {
+    if (getCurrentMatch()) return null;
+    const savedTeamMatch = getCurrentTeamMatch();
+    if (savedTeamMatch?.league?.tieId) {
+      clearCurrentTeamMatch();
+      return null;
+    }
+    if (!savedTeamMatch?.matches) return null;
+    return {
+      ...savedTeamMatch,
+      scoreA: Number(savedTeamMatch.scoreA) || 0,
+      scoreB: Number(savedTeamMatch.scoreB) || 0
+    };
+  });
+  const [savedConfigs, setSavedConfigs] = useState(() => getTeamMatchConfigs());
+  const resumedSession = useRef(false);
 
   useEffect(() => {
-    // Check for saved match on load
-    const savedMatch = getCurrentMatch();
-    if (savedMatch) {
-      setActiveMatch(savedMatch);
-      if (location.pathname === '/') navigate('/match');
-    } else {
-      const savedTeamMatch = getCurrentTeamMatch();
-      if (savedTeamMatch && savedTeamMatch.matches) {
-        // Ensure scores are numbers
-        savedTeamMatch.scoreA = Number(savedTeamMatch.scoreA) || 0;
-        savedTeamMatch.scoreB = Number(savedTeamMatch.scoreB) || 0;
-        setActiveTeamMatch(savedTeamMatch);
-        if (location.pathname === '/') navigate('/team-dashboard');
-      }
-    }
-    // Load saved configs and seed roster from existing history
-    setSavedConfigs(getTeamMatchConfigs());
     syncPlayersFromHistory();
-  }, []);
+    if (resumedSession.current) return;
+    resumedSession.current = true;
+    if (location.pathname !== '/') return;
+    if (activeMatch) navigate('/match');
+    else if (activeTeamMatch) navigate('/team-dashboard');
+  }, [activeMatch, activeTeamMatch, location.pathname, navigate]);
 
   useEffect(() => {
     if (activeMatch && !activeTeamMatch) {
@@ -57,9 +60,12 @@ function App() {
   }, [activeMatch, activeTeamMatch]);
 
   useEffect(() => {
-    if (activeTeamMatch) {
-      saveCurrentTeamMatch(activeTeamMatch);
+    if (!activeTeamMatch) return;
+    if (activeTeamMatch.league?.tieId) {
+      clearCurrentTeamMatch();
+      return;
     }
+    saveCurrentTeamMatch(activeTeamMatch);
   }, [activeTeamMatch]);
 
   // Quick Match Handlers
@@ -182,39 +188,6 @@ function App() {
     }
   };
 
-  const handleNavigateHome = (finalMatchData) => {
-    if (activeTeamMatch) {
-      // Update team match state
-      const newMatches = [...activeTeamMatch.matches];
-      newMatches[activeTeamMatch.currentMatchIndex] = { ...finalMatchData, status: 'completed' };
-
-      const winner = finalMatchData.score1 > finalMatchData.score2 ? 1 : 2;
-      const currentScoreA = Number(activeTeamMatch.scoreA) || 0;
-      const currentScoreB = Number(activeTeamMatch.scoreB) || 0;
-      const newScoreA = winner === 1 ? currentScoreA + 1 : currentScoreA;
-      const newScoreB = winner === 2 ? currentScoreB + 1 : currentScoreB;
-
-      const updatedTeamMatch = {
-        ...activeTeamMatch,
-        matches: newMatches,
-        scoreA: newScoreA,
-        scoreB: newScoreB,
-        currentMatchIndex: null
-      };
-
-      // Save to storage so it persists in "Upcoming Team Matches"
-      saveTeamMatchConfig(updatedTeamMatch);
-      // Clear active state to return home
-      setActiveTeamMatch(null);
-      navigate('/');
-    } else {
-      saveMatch(finalMatchData);
-      clearCurrentMatch();
-      setActiveMatch(null);
-      navigate('/');
-    }
-  };
-
   // Team Match Handlers
   const handleStartTeamMatch = (teamMatchData) => {
     // Keep the draft saved so it remains in "Upcoming Team Matches"
@@ -251,6 +224,7 @@ function App() {
   };
 
   const handlePlayTeamMatchGame = (index) => {
+    if (activeTeamMatch?.league?.viewOnly) return;
     const matchToPlay = activeTeamMatch.matches[index];
     const matchData = {
       ...matchToPlay,
@@ -289,6 +263,24 @@ function App() {
       clearCurrentTeamMatch();
       setActiveTeamMatch(null);
       navigate(`/knockout/${league.tournamentId}`);
+      return;
+    }
+
+    if (league?.viewOnly && league?.tieId) {
+      clearCurrentTeamMatch();
+      setActiveTeamMatch(null);
+      navigate(`/league/${league.tournamentId}`);
+      return;
+    }
+
+    if (league?.tieId && league?.tournamentId) {
+      const tournament = getKnockoutTournament(league.tournamentId);
+      if (tournament) {
+        saveKnockoutTournament(applyTieResult(tournament, league.tieId, activeTeamMatch));
+      }
+      clearCurrentTeamMatch();
+      setActiveTeamMatch(null);
+      navigate(`/league/${league.tournamentId}`);
       return;
     }
 
@@ -363,7 +355,6 @@ function App() {
                 match={activeMatch}
                 onMatchComplete={handleMatchComplete}
                 onCancel={handleCancelMatch}
-                onNavigateHome={handleNavigateHome}
                 hasMoreMatches={activeTeamMatch && activeTeamMatch.matches.some((m, i) => i !== activeTeamMatch.currentMatchIndex && m.status !== 'completed')}
                 teamAName={activeMatch.knockout ? (activeMatch.pair1Name || 'Pair 1') : (activeTeamMatch ? activeTeamMatch.teamA.name : 'Team 1')}
                 teamBName={activeMatch.knockout ? (activeMatch.pair2Name || 'Pair 2') : (activeTeamMatch ? activeTeamMatch.teamB.name : 'Team 2')}
@@ -400,7 +391,7 @@ function App() {
       {/* Footer */}
       {!isImmersive && (
         <footer style={{ marginTop: '2rem', textAlign: 'center', color: 'var(--color-text-muted)', fontSize: '0.75rem' }}>
-          <p>© {new Date().getFullYear()} Badminton Score Recorder</p>
+          <p>© {new Date().getFullYear()} BadmintonScore</p>
         </footer>
       )}
     </div>

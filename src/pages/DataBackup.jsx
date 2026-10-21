@@ -97,7 +97,7 @@ const DataBackup = () => {
         <p style={{ color: 'var(--color-text-muted)', fontSize: '0.875rem' }}>
           Downloads a JSON file with match history, team matches, drafts, tournaments, and the player roster.
         </p>
-        <button type="button" className="btn btn-primary" onClick={handleExport}>
+        <button type="button" className="btn btn-primary btn-block" onClick={handleExport}>
           Download backup
         </button>
       </div>
@@ -144,7 +144,7 @@ const DataBackup = () => {
           style={{ display: 'none' }}
           onChange={(e) => handleImportFile(e.target.files?.[0])}
         />
-        <button type="button" className="btn btn-secondary" onClick={() => fileRef.current?.click()}>
+        <button type="button" className="btn btn-secondary btn-block" onClick={() => fileRef.current?.click()}>
           Choose backup file
         </button>
       </div>

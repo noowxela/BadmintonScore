@@ -28,17 +28,6 @@ const MatchScheduleCard = ({ match, id }) => {
         zIndex: isDragging ? 999 : 1,
     };
 
-    const getCategoryColor = (category) => {
-        switch (category) {
-            case 'MS': return 'text-blue-400';
-            case 'WS': return 'text-pink-400';
-            case 'MD': return 'text-blue-300';
-            case 'WD': return 'text-pink-300';
-            case 'XD': return 'text-purple-400';
-            default: return 'text-gray-400';
-        }
-    };
-
     return (
         <div ref={setNodeRef} style={style} {...attributes} {...listeners}>
             <div style={{ display: 'flex', alignItems: 'center', gap: '0.5rem', marginBottom: '0.25rem' }}>
