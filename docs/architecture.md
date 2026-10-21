@@ -11,7 +11,7 @@ BadmintonScore is a client-only React app. Vite builds it with `base: '/Badminto
 - `src/utils/bracket.js`, `league.js`, and `timetable.js` stay plain JavaScript. `league.js` writes a finished group tie, including its court schedule, through `applyTieResult`.
 - `src/data/db.js` is the only module that touches `localStorage`. `src/data/repositories/` splits matches, players, stats, and backup. `src/utils/storage.js` re-exports that public API. Writes are caught so a full or blocked store does not throw.
 - Laksa teams and group results live in `src/data/examples/laksaBowl.json`. `laksaBowl50.js` builds the bracket from that file when someone loads the example. A new league is created from `LeagueSetup` and its group names and knockout tabs come from the saved tournament.
-- Color tokens are in `src/styles/tokens.css`. Static layout that used to be inline is in `src/styles/layout.css`.
+- Color and type tokens are in `src/styles/tokens.css`: dark `#13111C` surfaces, purple `#9D4EDD` primary buttons, IBM Plex Serif headings, and Inter for the UI. The two court sides stay amber and blue. Static layout is in `src/styles/layout.css`.
 
 ## Deploy
 

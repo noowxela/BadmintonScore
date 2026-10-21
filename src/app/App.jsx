@@ -40,7 +40,7 @@ const AppShell = () => {
       {!isImmersive && (
         <header className="header">
           <div className="title title-link" onClick={() => navigate('/')}>
-            Badminton<span className="title-plain">Score</span>
+            Badminton<span>Score</span>
           </div>
           {location.pathname !== '/' && location.pathname !== '/team-dashboard' && (
             <button className="btn btn-secondary btn-icon" onClick={() => navigate('/')}>

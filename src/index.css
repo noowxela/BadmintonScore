@@ -1,4 +1,4 @@
-@import url('https://fonts.googleapis.com/css2?family=Outfit:wght@400;500;600;700;800&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=IBM+Plex+Serif:wght@400;500&family=Inter:wght@400;500;600&display=swap');
 @import './styles/tokens.css';
 @import './styles/layout.css';
 
@@ -17,6 +17,11 @@ body {
   color-scheme: dark;
 }
 
+h1, h2, h3, .title, .bracket-brand {
+  font-family: var(--font-display);
+  font-weight: 500;
+}
+
 button {
   cursor: pointer;
   border: none;
@@ -30,9 +35,9 @@ input, select {
 
 /* Utilities */
 .container {
-  max-width: 900px;
+  max-width: 1024px;
   margin: 0 auto;
-  padding: 1rem;
+  padding: 16px 20px;
   min-height: 100vh;
   display: flex;
   flex-direction: column;
@@ -40,20 +45,33 @@ input, select {
 
 .card {
   background-color: var(--color-surface);
+  border: 1px solid var(--color-border);
   border-radius: var(--radius-lg);
-  padding: 1.5rem;
-  box-shadow: var(--shadow-md);
-  margin-bottom: 1rem;
+  padding: 24px;
+  box-shadow: none;
+  margin-bottom: 16px;
 }
 
 .btn {
   display: inline-flex;
   align-items: center;
   justify-content: center;
-  padding: 0.75rem 1.5rem;
+  gap: 8px;
+  min-height: 48px;
+  padding: 12px 24px;
   border-radius: var(--radius-md);
-  font-weight: 600;
-  transition: all 0.2s;
+  font-weight: 400;
+  font-size: 16px;
+  line-height: 26px;
+  transition: background-color 0.15s, border-color 0.15s, color 0.15s;
+}
+
+.btn:disabled {
+  background: rgba(84, 82, 96, 0.5);
+  color: #a1a0ab;
+  border-color: transparent;
+  box-shadow: none;
+  cursor: not-allowed;
 }
 
 .btn-block {
@@ -62,21 +80,30 @@ input, select {
 
 .btn-primary {
   background-color: var(--color-primary);
-  color: white;
+  color: #ffffff;
+  border: none;
+  box-shadow: var(--shadow-button);
 }
 
 .btn-primary:hover {
   background-color: var(--color-primary-dark);
 }
 
+.btn-primary:active {
+  background-color: var(--color-primary-active);
+  box-shadow: none;
+}
+
 .btn-secondary {
-  background-color: var(--color-surface);
-  color: var(--color-text);
-  border: 1px solid var(--color-text-muted);
+  background-color: transparent;
+  color: #ffffff;
+  border: 1px solid var(--color-border);
+  box-shadow: var(--shadow-inset);
 }
 
 .btn-secondary:hover {
-  background-color: var(--color-surface-elevated);
+  background-color: rgba(255, 255, 255, 0.05);
+  border-color: #6c6b7b;
 }
 
 .btn-danger {
@@ -95,41 +122,53 @@ input, select {
 
 .label {
   display: block;
-  margin-bottom: 0.5rem;
-  color: var(--color-text-muted);
-  font-size: 0.875rem;
+  margin-bottom: 8px;
+  color: var(--color-link);
+  font-size: 14px;
+  font-weight: 500;
+  line-height: 20px;
 }
 
-.input {
+.input, select.input, textarea.input {
   width: 100%;
-  padding: 0.75rem;
+  min-height: 42px;
+  padding: 8px 12px;
   border-radius: var(--radius-md);
-  background-color: var(--color-bg);
-  border: 1px solid var(--color-border);
+  background-color: rgba(19, 17, 28, 0.5);
+  border: 1px solid rgba(255, 255, 255, 0.1);
   color: var(--color-text);
-  font-size: 1rem;
+  font-size: 16px;
+  line-height: 24px;
+}
+
+.input::placeholder {
+  color: rgba(108, 107, 123, 0.6);
+}
+
+.input:hover {
+  border-color: rgba(255, 255, 255, 0.2);
 }
 
 .input:focus {
-  outline: 2px solid var(--color-primary);
-  border-color: transparent;
+  outline: none;
+  border-color: var(--color-primary);
+  box-shadow: 0 0 0 2px rgba(157, 78, 221, 0.2) inset;
 }
 
 .header {
   display: flex;
   align-items: center;
   justify-content: space-between;
-  margin-bottom: 2rem;
-  padding-top: 1rem;
+  margin-bottom: 32px;
+  padding: 16px 0;
+  background: transparent;
 }
 
 .title {
-  font-size: 1.5rem;
-  font-weight: 800;
-  background: linear-gradient(to right, var(--color-primary), var(--color-accent));
-  -webkit-background-clip: text;
-  background-clip: text;
-  color: transparent;
+  font-size: 32px;
+  line-height: 40px;
+  font-weight: 500;
+  color: var(--color-text);
 }
 
 .nav-grid {
@@ -140,27 +179,28 @@ input, select {
 }
 
 .nav-card {
-  background-color: var(--color-surface);
-  padding: 1.5rem;
+  background-color: var(--color-bg-deep);
+  padding: 24px;
   border-radius: var(--radius-lg);
   text-align: center;
   cursor: pointer;
-  transition: transform 0.2s, background-color 0.2s, border-color 0.2s;
-  border: 1px solid transparent;
+  transition: background-color 0.15s, border-color 0.15s;
+  border: 1px solid var(--color-border);
   display: flex;
   flex-direction: column;
   align-items: center;
-  gap: 0.5rem;
+  gap: 8px;
+  min-height: 44px;
 }
 
 .nav-card:hover {
-  transform: translateY(-2px);
-  border-color: var(--color-primary);
+  background-color: rgba(255, 255, 255, 0.05);
+  border-color: #6c6b7b;
 }
 
 .nav-card svg {
-  color: var(--color-primary);
-  margin-bottom: 0.5rem;
+  color: var(--color-text-soft);
+  margin-bottom: 8px;
 }
 
 .nav-card h3 {
@@ -171,20 +211,24 @@ input, select {
 .btn-score {
   height: 100%;
   width: 100%;
+  min-height: 120px;
+  font-family: var(--font-display);
   font-size: 3rem;
+  font-weight: 500;
   display: flex;
   flex-direction: column;
   justify-content: center;
   align-items: center;
-  background-color: rgba(255, 107, 0, 0.1);
-  border: 2px solid var(--color-primary);
-  color: var(--color-primary);
-  transition: all 0.1s;
+  background-color: transparent;
+  border: 1px solid var(--color-border);
+  color: var(--color-text);
+  box-shadow: none;
+  transition: transform 0.1s, background-color 0.1s;
 }
 
 .btn-score:active {
   transform: scale(0.98);
-  background-color: rgba(255, 107, 0, 0.2);
+  background-color: rgba(255, 255, 255, 0.08);
 }
 
 .bracket-page {
@@ -194,7 +238,7 @@ input, select {
   --bracket-line: var(--color-danger);
   --bracket-win: rgba(52, 199, 89, 0.18);
   --bracket-win-ink: var(--color-success);
-  --bracket-blue: var(--color-primary);
+  --bracket-blue: var(--color-text-soft);
   font-family: var(--font-family);
   background: var(--bracket-bg);
   color: var(--bracket-ink);
@@ -208,7 +252,7 @@ input, select {
 .bracket-header {
   text-align: center;
   padding: 0.85rem 1rem 0.5rem;
-  background: linear-gradient(180deg, #121212 0%, var(--bracket-bg) 100%);
+  background: var(--color-bg-deep);
 }
 
 .bracket-brand {
@@ -705,9 +749,10 @@ input, select {
 }
 
 .league-agenda-btn {
-  background: #9f1239 !important;
+  background: transparent !important;
   color: #fff !important;
-  border-color: #9f1239 !important;
+  border-color: var(--color-border) !important;
+  box-shadow: var(--shadow-inset);
 }
 
 .league-team-cell {
@@ -784,7 +829,7 @@ input, select {
   justify-content: space-between;
   align-items: center;
   padding: 0.75rem 1rem;
-  background: rgba(255, 107, 0, 0.12);
+  background: var(--color-bg-deep);
   border-bottom: 1px solid var(--color-border);
 }
 
@@ -1135,7 +1180,7 @@ input, select {
 .rule-got-it {
   width: 100%;
   margin-top: 1rem;
-  background: rgba(255, 107, 0, 0.18);
+  background: rgba(157, 78, 221, 0.18);
   color: var(--color-primary);
   border-radius: 0.75rem;
   padding: 0.8rem 1rem;
@@ -1310,8 +1355,8 @@ button.timetable-cell:hover {
 }
 
 .tt-group { background: rgba(52, 199, 89, 0.22); }
-.tt-sf { background: rgba(255, 107, 0, 0.22); }
-.tt-loser { background: rgba(255, 138, 61, 0.2); }
+.tt-sf { background: rgba(157, 78, 221, 0.22); }
+.tt-loser { background: rgba(244, 185, 66, 0.22); }
 .tt-knock { background: rgba(255, 59, 48, 0.2); }
 .tt-empty {
   background: transparent;
