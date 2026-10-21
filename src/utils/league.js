@@ -105,7 +105,8 @@ export const applyTieResult = (tournament, tieId, teamMatch) => {
       scoreA,
       scoreB,
       status: 'completed',
-      winnerId
+      winnerId,
+      schedule: teamMatch.schedule || tie.schedule
     };
   });
   return { ...tournament, ties };

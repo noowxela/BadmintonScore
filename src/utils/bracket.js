@@ -1,3 +1,5 @@
+import { createId } from '../domain/ids';
+
 const ROUND_NAMES = {
   128: 'Top 128',
   64: 'Top 64',
@@ -19,7 +21,7 @@ export const CATEGORIES = [
 export const getCategoryMeta = (value) =>
   CATEGORIES.find(c => c.value === value) || CATEGORIES[4];
 
-const uid = (prefix) => `${prefix}-${Date.now().toString(36)}-${Math.random().toString(36).slice(2, 7)}`;
+const uid = (prefix) => createId(prefix);
 
 const nextPowerOfTwo = (n) => Math.pow(2, Math.ceil(Math.log2(Math.max(n, 2))));
 

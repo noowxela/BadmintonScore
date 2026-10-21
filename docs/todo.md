@@ -1,14 +1,9 @@
 # Deferred work
 
-Left for a later decision. Do not start these until Alex asks.
+Still open.
 
-- B3: extract team-tie scoring and the duplicated knockout result handler out of `App.jsx`
-- B4: one match field shape (`p1` vs `player1`) plus a schema version
-- B5: split `storage.js`, catch storage failures, use `crypto.randomUUID()`
-- B6: stop calling `ensureLaksaBowl50()` during render; one `getTournament(id)`
-- B7: persist the court scheduler
-- B8: shared modal and button components instead of `alert` / `confirm`
-- Phase C: feature folders, CSS split, Laksa as an importable example, optional TypeScript
-- Review §12: who the app is for, real-name publicity, AI tool directories, best-of-three scoring, and the official name
+- Review §12: audience, live league scoring, sync, whether real names and the AI tool directories stay public, best-of-three, and whether the official name changes. This pass kept the current offline app, the Laksa file, the AI directories, games to 21, and the name BadmintonScore.
+- TypeScript covers `src/domain` only. Pages and storage are still JavaScript.
+- A few styles stay inline where the value depends on the score or the winner.
 
-A1 remote branch deletes and A2 Dependabot PR closes are still for Alex to do on GitHub.
+The four remote `cursor/*` branches are no longer on GitHub.

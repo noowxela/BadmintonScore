@@ -1,0 +1,43 @@
+{
+  "id": "laksa-bowl-50",
+  "title": "LAKSA BOWL 5.0",
+  "subtitle": "Laksa group internal badminton match",
+  "date": "2025-07-25",
+  "note": "Group stage is complete. Top 2 from each group are in the winner-pool semifinals.",
+  "tieFormat": "Men Singles · Men Doubles · Mixed Doubles",
+  "groups": [
+    { "id": "A", "name": "Group A" },
+    { "id": "B", "name": "Group B" }
+  ],
+  "teams": [
+    { "id": "badai", "code": "A1", "group": "A", "name": "Badai", "players": { "ms": "Andy", "md1": "KC", "md2": "Aizat", "mxM": "Norman", "mxW": "Beatrice" } },
+    { "id": "kabus", "code": "A2", "group": "A", "name": "Kabus", "players": { "ms": "Jonathan", "md1": "Swan", "md2": "Yanbin", "mxM": "Rayyan", "mxW": "Chiayan" } },
+    { "id": "hujan", "code": "A3", "group": "A", "name": "Hujan", "players": { "ms": "Padil", "md1": "Yuxuan", "md2": "Jae", "mxM": "Kugan", "mxW": "Sharon" } },
+    { "id": "guruh", "code": "A4", "group": "A", "name": "Guruh", "players": { "ms": "Icap", "md1": "Rins", "md2": "Winto", "mxM": "Kelvin", "mxW": "Joyce" } },
+    { "id": "ribut", "code": "A5", "group": "A", "name": "Ribut", "players": { "ms": "Valentine", "md1": "Fordan", "md2": "Johan", "mxM": "Raj", "mxW": "Amanda" } },
+    { "id": "taufan", "code": "B1", "group": "B", "name": "Taufan", "players": { "ms": "Sukamuljo", "md1": "Edwin", "md2": "Joshua", "mxM": "Kenny", "mxW": "Dalisa" } },
+    { "id": "ombak", "code": "B2", "group": "B", "name": "Ombak", "players": { "ms": "Reese", "md1": "Darwish", "md2": "Han", "mxM": "Jaykanesh", "mxW": "Preveena" } },
+    { "id": "bayu", "code": "B3", "group": "B", "name": "Bayu", "players": { "ms": "Acai", "md1": "Alex", "md2": "TKY", "mxM": "Mintai", "mxW": "Kahyee" } },
+    { "id": "petir", "code": "B4", "group": "B", "name": "Petir", "players": { "ms": "Wei Chean", "md1": "Kugen", "md2": "Gordon", "mxM": "Chia", "mxW": "Wan Qin" } }
+  ],
+  "results": [
+    { "id": "a-hujan-ribut", "group": "A", "teamAId": "hujan", "teamBId": "ribut", "winnerId": "hujan", "scores": { "ms": [21, 19], "md": [21, 20], "xd": [19, 21] } },
+    { "id": "a-hujan-guruh", "group": "A", "teamAId": "hujan", "teamBId": "guruh", "winnerId": "hujan", "scores": { "ms": [21, 9], "md": [21, 11], "xd": [16, 21] } },
+    { "id": "a-hujan-badai", "group": "A", "teamAId": "hujan", "teamBId": "badai", "winnerId": "hujan", "scores": { "ms": [21, 17], "md": [21, 15], "xd": [16, 21] } },
+    { "id": "a-hujan-kabus", "group": "A", "teamAId": "hujan", "teamBId": "kabus", "winnerId": "hujan", "scores": { "ms": [21, 12], "md": [21, 14], "xd": [20, 22] } },
+    { "id": "a-ribut-guruh", "group": "A", "teamAId": "ribut", "teamBId": "guruh", "winnerId": "ribut", "scores": { "ms": [21, 12], "md": [21, 10], "xd": [15, 21] } },
+    { "id": "a-ribut-badai", "group": "A", "teamAId": "ribut", "teamBId": "badai", "winnerId": "ribut", "scores": { "ms": [21, 15], "md": [21, 17], "xd": [19, 21] } },
+    { "id": "a-guruh-badai", "group": "A", "teamAId": "guruh", "teamBId": "badai", "winnerId": "guruh", "scores": { "ms": [21, 19], "md": [21, 20], "xd": [18, 21] } },
+    { "id": "a-guruh-kabus", "group": "A", "teamAId": "guruh", "teamBId": "kabus", "winnerId": "guruh", "scores": { "ms": [21, 19], "md": [21, 18], "xd": [19, 21] } },
+    { "id": "a-kabus-ribut", "group": "A", "teamAId": "kabus", "teamBId": "ribut", "winnerId": "kabus", "scores": { "ms": [21, 19], "md": [22, 20], "xd": [18, 21] } },
+    { "id": "a-badai-kabus", "group": "A", "teamAId": "badai", "teamBId": "kabus", "winnerId": "badai", "scores": { "ms": [21, 18], "md": [21, 16], "xd": [17, 21] } },
+    { "id": "b-taufan-petir", "group": "B", "teamAId": "taufan", "teamBId": "petir", "winnerId": "taufan", "scores": { "ms": [21, 15], "md": [21, 19], "xd": [18, 21] } },
+    { "id": "b-taufan-bayu", "group": "B", "teamAId": "taufan", "teamBId": "bayu", "winnerId": "taufan", "scores": { "ms": [21, 17], "md": [21, 16], "xd": [19, 21] } },
+    { "id": "b-taufan-ombak", "group": "B", "teamAId": "taufan", "teamBId": "ombak", "winnerId": "taufan", "scores": { "ms": [21, 12], "md": [21, 18], "xd": [16, 21] } },
+    { "id": "b-petir-bayu", "group": "B", "teamAId": "petir", "teamBId": "bayu", "winnerId": "petir", "scores": { "ms": [21, 18], "md": [21, 19], "xd": [17, 21] } },
+    { "id": "b-petir-ombak", "group": "B", "teamAId": "petir", "teamBId": "ombak", "winnerId": "petir", "scores": { "ms": [21, 14], "md": [21, 17], "xd": [19, 21] } },
+    { "id": "b-bayu-ombak", "group": "B", "teamAId": "bayu", "teamBId": "ombak", "winnerId": "bayu", "scores": { "ms": [21, 16], "md": [21, 19], "xd": [18, 21] } }
+  ],
+  "winnerOrder": ["hujan", "petir", "taufan", "ribut"],
+  "loserOrder": ["kabus", "badai", "ombak", "bayu", "guruh"]
+}
