@@ -101,10 +101,10 @@ const MatchSetup = ({ onStartMatch, onCancel }) => {
                 </div>
 
                 <div style={{ display: 'grid', gap: '1rem', marginTop: '2rem' }}>
-                    <button type="submit" className="btn btn-primary">
+                    <button type="submit" className="btn btn-primary btn-block">
                         Start Match
                     </button>
-                    <button type="button" className="btn btn-secondary" onClick={onCancel}>
+                    <button type="button" className="btn btn-secondary btn-block" onClick={onCancel}>
                         Cancel
                     </button>
                 </div>

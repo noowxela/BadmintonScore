@@ -10,6 +10,8 @@
   --color-primary-dark: #e05a00;
   --color-secondary: #2c2c2e;
   --color-accent: #ff8a3d;
+  --color-side-a: #ff6b00;
+  --color-side-b: #2f9bff;
   --color-text: #ffffff;
   --color-text-muted: #8e8e93;
   --color-danger: #ff3b30;
@@ -79,6 +81,9 @@ input, select {
   border-radius: var(--radius-md);
   font-weight: 600;
   transition: all 0.2s;
+}
+
+.btn-block {
   width: 100%;
 }
 

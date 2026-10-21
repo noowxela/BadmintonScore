@@ -313,7 +313,7 @@ const KnockoutBracket = ({ onPlayMatch }) => {
                 </div>
               ))}
             </div>
-            <button type="button" className="btn btn-secondary" onClick={() => setShowTimetable(false)}>Close</button>
+            <button type="button" className="btn btn-secondary btn-block" onClick={() => setShowTimetable(false)}>Close</button>
           </div>
         </div>
       )}
@@ -347,8 +347,8 @@ const KnockoutBracket = ({ onPlayMatch }) => {
               Bronze medal match
             </label>
             <div style={{ display: 'flex', gap: '0.75rem' }}>
-              <button type="button" className="btn btn-secondary" onClick={() => setShowAddEvent(false)}>Cancel</button>
-              <button type="button" className="btn btn-primary" onClick={handleAddEvent}>Generate</button>
+              <button type="button" className="btn btn-secondary btn-block" onClick={() => setShowAddEvent(false)}>Cancel</button>
+              <button type="button" className="btn btn-primary btn-block" onClick={handleAddEvent}>Generate</button>
             </div>
           </div>
         </div>
