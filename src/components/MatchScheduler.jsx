@@ -1,30 +1,23 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState } from 'react';
 import { DndContext, DragOverlay, closestCorners, KeyboardSensor, PointerSensor, useSensor, useSensors } from '@dnd-kit/core';
-import { arrayMove, SortableContext, sortableKeyboardCoordinates, verticalListSortingStrategy } from '@dnd-kit/sortable';
+import { SortableContext, sortableKeyboardCoordinates, verticalListSortingStrategy } from '@dnd-kit/sortable';
 import MatchScheduleCard from './MatchScheduleCard';
 import { Plus, Minus, Clock } from 'lucide-react';
 
-const MatchScheduler = ({ matches, teamMatchDate }) => {
+const MatchScheduler = ({ matches }) => {
     // Configuration
     const [courts, setCourts] = useState([1, 2, 3, 4]);
     const [startTime, setStartTime] = useState('09:00');
     const [timeInterval, setTimeInterval] = useState(30); // minutes
-    const [numSlots, setNumSlots] = useState(10);
+    const numSlots = 10;
 
     // State for scheduled matches: { 'courtId-timeSlot': [matchId] }
     // State for unscheduled matches: [matchId]
     const [scheduledMatches, setScheduledMatches] = useState({});
-    const [unscheduledMatches, setUnscheduledMatches] = useState([]);
+    const [unscheduledMatches, setUnscheduledMatches] = useState(() =>
+        (matches || []).map(m => m.id.toString())
+    );
     const [activeId, setActiveId] = useState(null);
-
-    // Initialize unscheduled matches
-    useEffect(() => {
-        if (matches) {
-            // Check if we already have some state, otherwise init all as unscheduled
-            // For now, reset to all unscheduled on load for simplicity, or could persist
-            setUnscheduledMatches(matches.map(m => m.id.toString()));
-        }
-    }, [matches]);
 
     const sensors = useSensors(
         useSensor(PointerSensor),
@@ -199,10 +192,7 @@ const MatchScheduler = ({ matches, teamMatchDate }) => {
                         </div>
                         <div style={{ flex: 1, overflowX: 'auto', overflowY: 'hidden', padding: '0.5rem' }}>
                             <SortableContext items={unscheduledMatches} strategy={verticalListSortingStrategy} id="unscheduled">
-                                <div ref={(node) => {
-                                    // This is a bit of a hack to make the droppable area the whole container
-                                    // We need a droppable container for 'unscheduled'
-                                }} style={{ height: '100%', minWidth: '100%', display: 'flex', gap: '1rem' }}>
+                                <div style={{ height: '100%', minWidth: '100%', display: 'flex', gap: '1rem' }}>
                                     <DroppableContainer id="unscheduled" style={{ display: 'flex', gap: '1rem', height: '100%', alignItems: 'center' }}>
                                         {unscheduledMatches.map(id => {
                                             const match = getMatchById(id);
