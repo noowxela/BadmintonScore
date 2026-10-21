@@ -12,6 +12,7 @@ Open the URL Vite prints. The app is served under `/BadmintonScore/`.
 ```bash
 npm run lint
 npm test
+npm run typecheck
 npm run build
 npm run preview
 ```
